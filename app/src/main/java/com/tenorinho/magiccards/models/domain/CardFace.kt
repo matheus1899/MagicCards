@@ -1,6 +1,8 @@
 package com.tenorinho.magiccards.models.domain
 
 data class CardFace(
+    val id:Int,
+    val uuid_card:String,
     val artist: String?,
     val color_indicator: Array<String>?,
     val colors: Array<String>?,
