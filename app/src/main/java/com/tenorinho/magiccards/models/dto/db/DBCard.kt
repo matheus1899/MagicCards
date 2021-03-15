@@ -16,7 +16,8 @@ data class DBCard(
     val scryfall_uri:String,
     val uri:String,
     val cmc:Float,
-    val ids_card_faces:String,
+    val id_card_faces:Int = -1,
+    val id_img_uri:Int = -1,
     val color_identity:String,              //criar uma unica string com todas as cores e usar split
     val colors:String,                      //criar uma unica string com todas as cores e usar split
     val keywords:String,                    //criar uma unica string com todas as cores e usar split

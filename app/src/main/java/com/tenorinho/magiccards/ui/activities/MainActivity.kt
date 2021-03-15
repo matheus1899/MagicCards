@@ -1,7 +1,8 @@
-package com.tenorinho.magiccards
+package com.tenorinho.magiccards.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.tenorinho.magiccards.R
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

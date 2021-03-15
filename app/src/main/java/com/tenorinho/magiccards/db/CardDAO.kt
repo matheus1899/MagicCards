@@ -9,20 +9,20 @@ import com.tenorinho.magiccards.models.dto.db.DBCard
 
 @Dao interface CardDAO {
     @Query("SELECT * FROM card_table WHERE uuid LIKE :uuid")
-    fun getCardByUUID(uuid:String):DBCard
+    suspend fun getCardByUUID(uuid:String):DBCard?
 
     @Query("SELECT * FROM card_table WHERE id LIKE :id")
-    fun getCardByID(id:Int):DBCard
+    suspend fun getCardByID(id:Int):DBCard?
 
     @Query("SELECT * FROM card_table WHERE card_name LIKE :name")
-    fun searchCardsByName(name:String):List<DBCard>?
+    suspend fun searchCardsByName(name:String):List<DBCard>?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addCard(card:DBCard):Int
+    suspend fun addCard(card:DBCard):Int
 
     @Delete
-    fun deleteCardByUUID(uuid: String)
+    suspend fun deleteCardByUUID(uuid: String)
 
     @Delete
-    fun deleteCardByID(id: Int)
+    suspend fun deleteCardByID(id: Int)
 }

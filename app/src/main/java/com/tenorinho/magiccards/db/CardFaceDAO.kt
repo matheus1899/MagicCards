@@ -9,17 +9,17 @@ import com.tenorinho.magiccards.models.dto.db.DBCardFace
 
 @Dao interface CardFaceDAO {
     @Query("SELECT * FROM card_face_table WHERE uuid_card LIKE :uuid_card")
-    fun getCardFaceByUUIDCard(uuid_card:String): DBCardFace
+    suspend fun getCardFaceByUUIDCard(uuid_card:String): DBCardFace?
 
     @Query("SELECT * FROM card_face_table WHERE id LIKE :id")
-    fun getCardFaceByID(id:Int): DBCardFace
+    suspend fun getCardFaceByID(id:Int): DBCardFace?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addCardFace(cardFace: DBCardFace):Int
+    suspend fun addCardFace(cardFace: DBCardFace):Int
 
     @Query("DELETE FROM card_face_table WHERE uuid_card LIKE :uuid_card")
-    fun deleteCardFaceByUUIDCard(uuid_card: String)
+    suspend fun deleteCardFaceByUUIDCard(uuid_card: String)
 
     @Delete
-    fun deleteCardByID(id: Int)
+    suspend fun deleteCardByID(id: Int)
 }

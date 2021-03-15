@@ -12,7 +12,7 @@ interface IScryfallService {
     @GET("cards/search")
     fun getCardsByText(@Query("q") search:String, @Query("unique=cards")unique:String=""):Call<NetworkListCards>
     @GET("cards/{id}")
-    fun getCardsById(@Path("id") cardId:String):Call<NetworkCard>
+    fun getCardsByUUId(@Path("id") cardId:String):Call<NetworkCard>
     @GET("cards/autocomplete")
     fun getSugestedCatalog(@Query("q") search: String):Call<NetworkCatalog>
     @GET("cards/random")
