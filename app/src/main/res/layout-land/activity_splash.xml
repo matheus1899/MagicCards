@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#4C413E"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="32dp"
+        android:src="@drawable/card_back_oval"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/splash_img_magic"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:srcCompat="@drawable/ic_magic_brown" />
+
+    <ImageView
+        android:id="@+id/splash_img_white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/splash_img_magic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_white_mana"
+        app:tint="@color/white_mana_splash" />
+
+    <ImageView
+        android:id="@+id/splash_img_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/splash_img_magic"
+        app:layout_constraintTop_toTopOf="@+id/splash_img_magic"
+        app:srcCompat="@drawable/ic_blue_mana"
+        app:tint="@color/blue_mana_splash" />
+
+    <ImageView
+        android:id="@+id/splash_img_black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/splash_img_magic"
+        app:layout_constraintStart_toEndOf="@id/splash_img_red"
+        app:layout_constraintTop_toBottomOf="@+id/splash_img_magic"
+        app:srcCompat="@drawable/ic_black_mana"
+        app:tint="@color/black_mana_splash" />
+
+    <ImageView
+        android:id="@+id/splash_img_red"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toStartOf="@+id/splash_img_black"
+        app:layout_constraintStart_toStartOf="@+id/splash_img_magic"
+        app:layout_constraintTop_toBottomOf="@+id/splash_img_magic"
+        app:srcCompat="@drawable/ic_red_mana"
+        app:tint="@color/red_mana_splash" />
+
+    <ImageView
+        android:id="@+id/splash_img_green"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toStartOf="@+id/splash_img_magic"
+        app:layout_constraintTop_toTopOf="@+id/splash_img_magic"
+        app:srcCompat="@drawable/ic_green_mana"
+        app:tint="@color/green_mana_splash" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorAccent">#D2AE6D</color>
+    <color name="colorPrimary">#4C413E</color>
+    <color name="colorPrimaryDark">#4C413E</color>
+    <color name="colorPrimaryLight">#766662</color>
+
+    <color name="white_mana">#F8F6D8</color>
+    <color name="blue_mana">#C1D7E9</color>
+    <color name="black_mana">#BAB1AB</color>
+    <color name="red_mana">#E49977</color>
+    <color name="green_mana">#A3C095</color>
+
+    <color name="white_mana_splash">#FFF688</color>
+    <color name="blue_mana_splash">#00AFEF</color>
+    <color name="black_mana_splash">#201E1E</color>
+    <color name="red_mana_splash">#ED3237</color>
+    <color name="green_mana_splash">#068A4F</color>
 </resources>

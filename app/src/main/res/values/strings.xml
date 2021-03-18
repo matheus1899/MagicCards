@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MagicCards</string>
+    <string name="activity_main_title" />
 </resources>

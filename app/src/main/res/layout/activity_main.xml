@@ -5,13 +5,136 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/main_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/colorPrimary"
+        android:maxHeight="118dp"
+        android:minHeight="64dp"
+        android:padding="0dp"
+        app:layout_constraintBottom_toTopOf="@id/main_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/activity_main_title"
+        app:titleTextColor="@android:color/white">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/main_magic_img"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_action_magic" />
+            <ImageButton
+                android:id="@+id/main_btn_search"
+                android:layout_width="wrap_content"
+                android:layout_height="64dp"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/transparent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_search_24" />
+            <EditText
+                android:id="@+id/main_search_view"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_search_view"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:paddingHorizontal="16dp"
+                android:textColor="@android:color/white"
+                android:hint="Search cards"
+                android:lines="1"
+                android:textColorHint="#CCC"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/main_magic_img"
+                app:layout_constraintTop_toTopOf="parent" />
+            <ImageButton
+                android:id="@+id/main_btn_white"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="12dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_white_mana"
+                android:tint="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/main_btn_blue"
+                app:layout_constraintStart_toStartOf="parent" />
+            <ImageButton
+                android:id="@+id/main_btn_blue"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginBottom="12dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_blue_mana"
+                android:tint="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/main_btn_green"
+                app:layout_constraintStart_toEndOf="@id/main_btn_white" />
+            <ImageButton
+                android:id="@+id/main_btn_green"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginBottom="12dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_green_mana"
+                android:tint="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/main_btn_red"
+                app:layout_constraintStart_toEndOf="@id/main_btn_blue" />
+            <ImageButton
+                android:id="@+id/main_btn_red"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginBottom="12dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_red_mana"
+                android:tint="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/main_btn_black"
+                app:layout_constraintStart_toEndOf="@id/main_btn_green" />
+            <ImageButton
+                android:id="@+id/main_btn_black"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="12dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_black_mana"
+                android:tint="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/main_btn_red" />
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/main_group_1"
+                android:visibility="visible"
+                app:constraint_referenced_ids="main_btn_search, main_magic_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/main_group_2"
+                android:visibility="gone"
+                app:constraint_referenced_ids="main_btn_black, main_btn_blue, main_btn_green, main_btn_red, main_btn_white, main_search_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.Toolbar>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/main_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_toolbar"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_card"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
