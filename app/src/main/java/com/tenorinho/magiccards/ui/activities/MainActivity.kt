@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.transition.ChangeBounds
 import android.transition.TransitionManager
 import android.view.KeyEvent
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnticipateOvershootInterpolator
@@ -16,10 +15,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.tenorinho.magiccards.R
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.Group
-import androidx.core.view.marginBottom
 import com.tenorinho.magiccards.ui.custom.SearchEditText
 
 class MainActivity : AppCompatActivity(),
@@ -54,19 +51,30 @@ class MainActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        init()
+    }
+    private fun init(){
+        getAllNecessaryViews()
+        setBehaviors()
+        imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        duracaoCurta = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+        duracaoMedia = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+        duracaoLonga = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+    }
+    private fun getAllNecessaryViews(){
         root = findViewById(R.id.main_root)
         toolbar = findViewById(R.id.main_toolbar)
         imgBtnSearch = findViewById(R.id.main_btn_search)
         txtSearch = findViewById(R.id.main_search_edit_text)
         imgMagicLogo = findViewById(R.id.main_magic_img)
         grupo_btn_mana = findViewById(R.id.main_group_btn_mana)
-
         btn_mana_white = findViewById(R.id.main_btn_white)
         btn_mana_blue = findViewById(R.id.main_btn_blue)
         btn_mana_green = findViewById(R.id.main_btn_green)
         btn_mana_red = findViewById(R.id.main_btn_red)
         btn_mana_black = findViewById(R.id.main_btn_black)
-
+    }
+    private fun setBehaviors(){
         btn_mana_white.setOnClickListener(this)
         btn_mana_blue.setOnClickListener(this)
         btn_mana_green.setOnClickListener(this)
@@ -75,11 +83,6 @@ class MainActivity : AppCompatActivity(),
         imgBtnSearch.setOnClickListener(this)
         txtSearch.setOnEditorActionListener(this)
         txtSearch.setOnFocusChangeListener(this)
-
-        imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        duracaoCurta = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
-        duracaoMedia = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
-        duracaoLonga = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
     }
     private fun onSearch(){
         Toast.makeText(this, "onSearch", Toast.LENGTH_SHORT).show()
@@ -92,7 +95,7 @@ class MainActivity : AppCompatActivity(),
         if(savedInstanceState.containsKey("toolbar_is_expand")){
             if(savedInstanceState.getBoolean("toolbar_is_expand")){
                 search_view_hide = false
-                expandeToolbar()
+                expandirToolbar()
                 txtSearch.requestFocus()
             }
             else{
@@ -101,7 +104,7 @@ class MainActivity : AppCompatActivity(),
         }
         super.onRestoreInstanceState(savedInstanceState)
     }
-    private fun expandeToolbar(){
+    private fun expandirToolbar(){
         txtSearch.apply{
             alpha = 0F
             visibility = View.VISIBLE
@@ -144,7 +147,7 @@ class MainActivity : AppCompatActivity(),
                 .setListener(null)
         }
     }
-    private fun recolheToolbar(){
+    private fun recolherToolbar(){
         grupo_btn_mana.apply{
             animate()
                 .alpha(0F)
@@ -197,7 +200,7 @@ class MainActivity : AppCompatActivity(),
             when(v.id){
                 R.id.main_btn_search -> {
                     if(search_view_hide){
-                        expandeToolbar()
+                        expandirToolbar()
                     }
                     search_view_hide = false
                 }
@@ -371,7 +374,7 @@ class MainActivity : AppCompatActivity(),
                         if(imm.isActive && imm.isAcceptingText){
                             fecharTeclado(txtSearch)
                         }
-                        recolheToolbar()
+                        recolherToolbar()
                         search_view_hide = true
                     }
                 }
