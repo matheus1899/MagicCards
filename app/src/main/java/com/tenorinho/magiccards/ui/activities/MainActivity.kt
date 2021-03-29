@@ -15,6 +15,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.tenorinho.magiccards.R
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.tenorinho.magiccards.App
+import com.tenorinho.magiccards.MainViewModel
+import com.tenorinho.magiccards.MainViewModelFactory
 import com.tenorinho.magiccards.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(),
@@ -22,31 +28,31 @@ class MainActivity : AppCompatActivity(),
     TextView.OnEditorActionListener,
     View.OnFocusChangeListener{
     private lateinit var binding:ActivityMainBinding
-
-    private var whiteSelected : Boolean = false
-    private var blueSelected : Boolean = false
-    private var greenSelected : Boolean = false
-    private var redSelected : Boolean = false
-    private var blackSelected : Boolean = false
-
+    private lateinit var viewModel:MainViewModel
     private var duracaoCurta:Long = 0L
     private var duracaoMedia:Long = 0L
     private var duracaoLonga:Long = 0L
-    private var search_view_hide = true
     private lateinit var imm: InputMethodManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         init()
     }
     private fun init(){
+        getViewModel()
+        binding.viewModel = viewModel
+        viewModel.error.observe(this, Observer { showLongToast(it.message)})
         setBehaviors()
         imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         duracaoCurta = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
         duracaoMedia = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
-        duracaoLonga = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+        duracaoLonga = resources.getInteger(android.R.integer.config_longAnimTime).toLong()
+    }
+    private fun getViewModel(){
+        val app = application as App
+        val factory = MainViewModelFactory(app.cardRepository)
+        viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
     }
     private fun setBehaviors(){
         binding.mainBtnWhite.setOnClickListener(this)
@@ -59,24 +65,14 @@ class MainActivity : AppCompatActivity(),
         binding.mainSearchEditText.setOnFocusChangeListener(this)
     }
     private fun onSearch(){
-        Toast.makeText(this, "onSearch", Toast.LENGTH_SHORT).show()
+        viewModel.search()
     }
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putBoolean("toolbar_is_expand", !search_view_hide)
-        super.onSaveInstanceState(outState)
-    }
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        if(savedInstanceState.containsKey("toolbar_is_expand")){
-            if(savedInstanceState.getBoolean("toolbar_is_expand")){
-                search_view_hide = false
-                expandirToolbar()
-                binding.mainSearchEditText.requestFocus()
-            }
-            else{
-                search_view_hide = true
-            }
+    override fun onResume(){
+        super.onResume()
+        if(viewModel.isExpanded){
+            expandirToolbar()
+            binding.mainSearchEditText.requestFocus()
         }
-        super.onRestoreInstanceState(savedInstanceState)
     }
     private fun expandirToolbar(){
         binding.mainSearchEditText.apply{
@@ -173,33 +169,33 @@ class MainActivity : AppCompatActivity(),
         if(v != null){
             when(v.id){
                 R.id.main_btn_search -> {
-                    if(search_view_hide){
+                    if(!viewModel.isExpanded){
                         expandirToolbar()
                     }
-                    search_view_hide = false
+                    viewModel.isExpanded = !viewModel.isExpanded
                 }
                 R.id.main_btn_white -> {
-                    whiteSelected = !whiteSelected
-                    if(whiteSelected){
+                    viewModel.whiteSelected = !viewModel.whiteSelected
+                    if(viewModel.whiteSelected){
                         binding.mainBtnWhite.setBackgroundResource(R.drawable.bg_btn_white_selected)
                         binding.mainBtnWhite.setColorFilter(resources.getColor(R.color.white_mana))
-                        if(blueSelected){
-                            blueSelected = false
+                        if(viewModel.blueSelected){
+                            viewModel.blueSelected = false
                             binding.mainBtnBlue.background = null
                             binding.mainBtnBlue.setColorFilter(null)
                         }
-                        if(greenSelected){
-                            greenSelected = false
+                        if(viewModel.greenSelected){
+                            viewModel.greenSelected = false
                             binding.mainBtnGreen.background = null
                             binding.mainBtnGreen.setColorFilter(null)
                         }
-                        if(redSelected){
-                            redSelected = false
+                        if(viewModel.redSelected){
+                            viewModel.redSelected = false
                             binding.mainBtnRed.background = null
                             binding.mainBtnRed.setColorFilter(null)
                         }
-                        if(blackSelected){
-                            blackSelected = false
+                        if(viewModel.blackSelected){
+                            viewModel.blackSelected = false
                             binding.mainBtnBlack.background = null
                             binding.mainBtnBlack.setColorFilter(null)
                         }
@@ -210,27 +206,27 @@ class MainActivity : AppCompatActivity(),
                     }
                 }
                 R.id.main_btn_blue -> {
-                    blueSelected = !blueSelected
-                    if(blueSelected){
+                    viewModel.blueSelected = !viewModel.blueSelected
+                    if(viewModel.blueSelected){
                         binding.mainBtnBlue.setBackgroundResource(R.drawable.bg_btn_blue_selected)
                         binding.mainBtnBlue.setColorFilter(resources.getColor(R.color.blue_mana))
-                        if(whiteSelected){
-                            whiteSelected = false
+                        if(viewModel.whiteSelected){
+                            viewModel.whiteSelected = false
                             binding.mainBtnWhite.background = null
                             binding.mainBtnWhite.setColorFilter(null)
                         }
-                        if(greenSelected){
-                            greenSelected = false
+                        if(viewModel.greenSelected){
+                            viewModel.greenSelected = false
                             binding.mainBtnGreen.background = null
                             binding.mainBtnGreen.setColorFilter(null)
                         }
-                        if(redSelected){
-                            redSelected = false
+                        if(viewModel.redSelected){
+                            viewModel.redSelected = false
                             binding.mainBtnRed.background = null
                             binding.mainBtnRed.setColorFilter(null)
                         }
-                        if(blackSelected){
-                            blackSelected = false
+                        if(viewModel.blackSelected){
+                            viewModel.blackSelected = false
                             binding.mainBtnBlack.background = null
                             binding.mainBtnBlack.setColorFilter(null)
                         }
@@ -241,27 +237,27 @@ class MainActivity : AppCompatActivity(),
                     }
                 }
                 R.id.main_btn_green -> {
-                    greenSelected = !greenSelected
-                    if(greenSelected){
+                    viewModel.greenSelected = !viewModel.greenSelected
+                    if(viewModel.greenSelected){
                         binding.mainBtnGreen.setBackgroundResource(R.drawable.bg_btn_green_selected)
                         binding.mainBtnGreen.setColorFilter(resources.getColor(R.color.green_mana))
-                        if(whiteSelected){
-                            whiteSelected = false
+                        if(viewModel.whiteSelected){
+                            viewModel.whiteSelected = false
                             binding.mainBtnWhite.background = null
                             binding.mainBtnWhite.setColorFilter(null)
                         }
-                        if(blueSelected){
-                            blueSelected = false
+                        if(viewModel.blueSelected){
+                            viewModel.blueSelected = false
                             binding.mainBtnBlue.background = null
                             binding.mainBtnBlue.setColorFilter(null)
                         }
-                        if(redSelected){
-                            redSelected = false
+                        if(viewModel.redSelected){
+                            viewModel.redSelected = false
                             binding.mainBtnRed.background = null
                             binding.mainBtnRed.setColorFilter(null)
                         }
-                        if(blackSelected){
-                            blackSelected = false
+                        if(viewModel.blackSelected){
+                            viewModel.blackSelected = false
                             binding.mainBtnBlack.background = null
                             binding.mainBtnBlack.setColorFilter(null)
                         }
@@ -272,27 +268,27 @@ class MainActivity : AppCompatActivity(),
                     }
                 }
                 R.id.main_btn_red -> {
-                    redSelected = !redSelected
-                    if(redSelected){
+                    viewModel.redSelected = !viewModel.redSelected
+                    if(viewModel.redSelected){
                         binding.mainBtnRed.setBackgroundResource(R.drawable.bg_btn_red_selected)
                         binding.mainBtnRed.setColorFilter(resources.getColor(R.color.red_mana))
-                        if(whiteSelected){
-                            whiteSelected = false
+                        if(viewModel.whiteSelected){
+                            viewModel.whiteSelected = false
                             binding.mainBtnWhite.background = null
                             binding.mainBtnWhite.setColorFilter(null)
                         }
-                        if(blueSelected){
-                            blueSelected = false
+                        if(viewModel.blueSelected){
+                            viewModel.blueSelected = false
                             binding.mainBtnBlue.background = null
                             binding.mainBtnBlue.setColorFilter(null)
                         }
-                        if(greenSelected){
-                            greenSelected = false
+                        if(viewModel.greenSelected){
+                            viewModel.greenSelected = false
                             binding.mainBtnGreen.background = null
                             binding.mainBtnGreen.setColorFilter(null)
                         }
-                        if(blackSelected){
-                            blackSelected = false
+                        if(viewModel.blackSelected){
+                            viewModel.blackSelected = false
                             binding.mainBtnBlack.background = null
                             binding.mainBtnBlack.setColorFilter(null)
                         }
@@ -303,27 +299,27 @@ class MainActivity : AppCompatActivity(),
                     }
                 }
                 R.id.main_btn_black -> {
-                    blackSelected = !blackSelected
-                    if(blackSelected){
+                    viewModel.blackSelected = !viewModel.blackSelected
+                    if(viewModel.blackSelected){
                         binding.mainBtnBlack.setBackgroundResource(R.drawable.bg_btn_black_selected)
                         binding.mainBtnBlack.setColorFilter(resources.getColor(R.color.black_mana))
-                        if(whiteSelected){
-                            whiteSelected = false
+                        if(viewModel.whiteSelected){
+                            viewModel.whiteSelected = false
                             binding.mainBtnWhite.background = null
                             binding.mainBtnWhite.setColorFilter(null)
                         }
-                        if(blueSelected){
-                            blueSelected = false
+                        if(viewModel.blueSelected){
+                            viewModel.blueSelected = false
                             binding.mainBtnBlue.background = null
                             binding.mainBtnBlue.setColorFilter(null)
                         }
-                        if(greenSelected){
-                            greenSelected = false
+                        if(viewModel.greenSelected){
+                            viewModel.greenSelected = false
                             binding.mainBtnGreen.background = null
                             binding.mainBtnGreen.setColorFilter(null)
                         }
-                        if(redSelected){
-                            redSelected = false
+                        if(viewModel.redSelected){
+                            viewModel.redSelected = false
                             binding.mainBtnRed.background = null
                             binding.mainBtnRed.setColorFilter(null)
                         }
@@ -342,14 +338,14 @@ class MainActivity : AppCompatActivity(),
                 R.id.main_search_edit_text -> {
                     if(hasFocus){
                         abrirTeclado()
-                        search_view_hide = false
+                        viewModel.isExpanded = true
                     }
                     else if(!hasFocus && binding.mainSearchEditText.text.isNullOrBlank()){
                         if(imm.isActive && imm.isAcceptingText){
                             fecharTeclado(binding.mainSearchEditText)
                         }
                         recolherToolbar()
-                        search_view_hide = true
+                        viewModel.isExpanded = false
                     }
                 }
             }
@@ -363,5 +359,8 @@ class MainActivity : AppCompatActivity(),
             }
             else -> false
         }
+    }
+    private fun showLongToast(message:String?){
+        Toast.makeText(this, message ?: "NO MESSAGE", Toast.LENGTH_LONG).show()
     }
 }

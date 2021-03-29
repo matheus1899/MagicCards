@@ -179,7 +179,6 @@ class CardRepository(val cardDAO: CardDAO,
                 layout == CardLayout.DOUBLE_FACED_TOKEN.layout ||
                 layout == CardLayout.TRANSFORM.layout
     }
-
     private fun splitToArray(s:String):Array<String>{
         val list = s.split(":")
         return Array(list.size){

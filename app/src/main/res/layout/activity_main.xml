@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.tenorinho.magiccards.MainViewModel"/>
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_root"
         android:focusable="true"
@@ -43,7 +48,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintGuide_begin="52dp" />
-
                 <ImageButton
                     android:id="@+id/main_btn_search"
                     android:layout_width="wrap_content"
@@ -53,7 +57,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_baseline_search_24" />
-
                 <com.tenorinho.magiccards.ui.custom.SearchEditText
                     android:id="@+id/main_search_edit_text"
                     android:layout_width="0dp"
@@ -63,6 +66,7 @@
                     android:background="@drawable/bg_search_view"
                     android:focusable="true"
                     android:hint="Search cards"
+                    android:text="@{viewModel.searchText}"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:maxLength="40"
@@ -75,7 +79,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/main_guideline_v_1"
                     app:layout_constraintTop_toTopOf="parent" />
-
                 <ImageButton
                     android:id="@+id/main_btn_white"
                     android:layout_width="32dp"
@@ -89,7 +92,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/main_btn_blue"
                     app:layout_constraintStart_toStartOf="parent" />
-
                 <ImageButton
                     android:id="@+id/main_btn_blue"
                     android:layout_width="32dp"
@@ -102,7 +104,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/main_btn_green"
                     app:layout_constraintStart_toEndOf="@id/main_btn_white" />
-
                 <ImageButton
                     android:id="@+id/main_btn_green"
                     android:layout_width="32dp"
@@ -115,7 +116,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/main_btn_red"
                     app:layout_constraintStart_toEndOf="@id/main_btn_blue" />
-
                 <ImageButton
                     android:id="@+id/main_btn_red"
                     android:layout_width="32dp"
@@ -128,7 +128,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/main_btn_black"
                     app:layout_constraintStart_toEndOf="@id/main_btn_green" />
-
                 <ImageButton
                     android:id="@+id/main_btn_black"
                     android:layout_width="32dp"
@@ -142,7 +141,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/main_btn_red" />
-
                 <androidx.constraintlayout.widget.Group
                     android:id="@+id/main_group_btn_mana"
                     android:layout_width="wrap_content"
