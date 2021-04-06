@@ -1,6 +1,7 @@
 package com.tenorinho.magiccards
 
 import android.net.Uri
+import android.util.Log
 import com.tenorinho.magiccards.db.CardDAO
 import com.tenorinho.magiccards.db.CardFaceDAO
 import com.tenorinho.magiccards.db.ImageURIsDAO
@@ -11,19 +12,51 @@ import com.tenorinho.magiccards.models.domain.ImageURIs
 import com.tenorinho.magiccards.models.dto.db.DBCardFace
 import com.tenorinho.magiccards.models.dto.db.DBImageURIs
 import com.tenorinho.magiccards.models.dto.network.NetworkCard
+import com.tenorinho.magiccards.models.dto.network.NetworkListCards
 import com.tenorinho.magiccards.net.IScryfallService
 import com.tenorinho.magiccards.net.RetrofitConfig
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.NullPointerException
 
 class CardRepository(val cardDAO: CardDAO,
                      val cardFaceDAO: CardFaceDAO,
                      val imageURIsDAO: ImageURIsDAO){
+    private val service = RetrofitConfig.getRetrofitScryfallService().create(IScryfallService::class.java)
 
-    val service = RetrofitConfig.getRetrofitScryfallService().create(IScryfallService::class.java)
-
-    suspend fun load(uuid: String): Card? {
+    fun search(searchText:String, success: (ArrayList<Card>?) -> Unit, failure: (Throwable) -> Unit){
+        val listCards = ArrayList<Card>()
+        val callback = service.getCardsByText(searchText)
+        callback.enqueue(object : Callback<NetworkListCards> {
+            override fun onResponse(call: Call<NetworkListCards>, response: Response<NetworkListCards>) {
+                try {
+                    if (response.code() == 200) {
+                        val body = response.body()
+                        if (body?.list != null) {
+                            for (i in body.list) {
+                                listCards.add(i.toCard())
+                            }
+                            success(listCards)
+                        }
+                        else {
+                            failure(Throwable("Body is null"))
+                        }
+                    }
+                    else if(response.code() == 404){
+                        failure(Throwable("0 cards found with \"${searchText}\""))
+                    }
+                }
+                catch (e: Exception) {
+                    failure(Throwable(e.message.toString() + " | " + e.cause))
+                }
+            }
+            override fun onFailure(call: Call<NetworkListCards>, t: Throwable) {
+                failure(t)
+            }
+        })
+    }
+    /*suspend fun load(uuid: String): Card? {
         var dbImgURIs : DBImageURIs? = null
         var dbCardFace : DBCardFace? = null
 
@@ -85,7 +118,9 @@ class CardRepository(val cardDAO: CardDAO,
                     dbCardFace.toughness_back,
                     dbCardFace.type_line_back
                 )
-                val cardFaceArray:Array<CardFace> = arrayOf(cardFaceFront, cardFaceBack)
+                val cardFaceArray:ArrayList<CardFace> = ArrayList<CardFace>()
+                cardFaceArray.add(cardFaceFront)
+                cardFaceArray.add(cardFaceBack)
                 with(dbCard){
                     return Card(
                         id, uuid, lang, oracle_id, Uri.parse(print_search_uri), Uri.parse(rulings_uri),
@@ -130,14 +165,10 @@ class CardRepository(val cardDAO: CardDAO,
                                     cardFaceArrayList.add(networkCard.card_faces[0].toCardFace())
                                     cardFaceArrayList.add(networkCard.card_faces[1].toCardFace())
                                 }
-
-                                val cardFaceArray = Array(2){
-                                    cardFaceArrayList[it]
-                                }
                                 with(networkCard){
                                     card = Card(
                                         -1, uuid, lang, oracle_id, Uri.parse(print_search_uri), Uri.parse(rulings_uri),
-                                        Uri.parse(scryfall_uri), Uri.parse(uri), cardFaceArray, cmc, color_identity, colors,
+                                        Uri.parse(scryfall_uri), Uri.parse(uri), cardFaceArrayList, cmc, color_identity, colors,
                                         keywords, CardLayout.getCardLayoutByString(layout), mana_cost ?: "", name,
                                         oracle_text?: "", power ?: "", produced_mana, toughness ?: "",
                                         type_line, artist ?: "", border_color, highres_image, image_status,
@@ -173,7 +204,7 @@ class CardRepository(val cardDAO: CardDAO,
             })
             return card
         }
-    }
+    }*/
     private fun isTwoFaced(layout:String):Boolean{
         return layout == CardLayout.MODAL_DFC.layout ||
                 layout == CardLayout.DOUBLE_FACED_TOKEN.layout ||

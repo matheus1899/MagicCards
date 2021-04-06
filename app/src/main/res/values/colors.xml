@@ -4,7 +4,7 @@
     <color name="colorPrimary">#4C413E</color>
     <color name="colorPrimaryDark">#4C413E</color>
     <color name="colorPrimaryLight">#766662</color>
-
+    <color name="lightGray">#D2D2D2</color>
     <color name="white_mana">#F8F6D8</color>
     <color name="blue_mana">#C1D7E9</color>
     <color name="black_mana">#BAB1AB</color>

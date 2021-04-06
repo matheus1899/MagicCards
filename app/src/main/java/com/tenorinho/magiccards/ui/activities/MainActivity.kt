@@ -22,6 +22,9 @@ import com.tenorinho.magiccards.App
 import com.tenorinho.magiccards.MainViewModel
 import com.tenorinho.magiccards.MainViewModelFactory
 import com.tenorinho.magiccards.databinding.ActivityMainBinding
+import com.tenorinho.magiccards.ui.CardAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity(),
     View.OnClickListener,
@@ -29,6 +32,7 @@ class MainActivity : AppCompatActivity(),
     View.OnFocusChangeListener{
     private lateinit var binding:ActivityMainBinding
     private lateinit var viewModel:MainViewModel
+    private lateinit var adapter:CardAdapter
     private var duracaoCurta:Long = 0L
     private var duracaoMedia:Long = 0L
     private var duracaoLonga:Long = 0L
@@ -40,9 +44,18 @@ class MainActivity : AppCompatActivity(),
         init()
     }
     private fun init(){
+        adapter = CardAdapter()
         getViewModel()
         binding.viewModel = viewModel
         viewModel.error.observe(this, Observer { showLongToast(it.message)})
+        viewModel.listCards.observe(this, Observer{
+            adapter.updateList(it)
+            viewModel.progressBarVisibility.value = false
+            if(viewModel.isExpanded){
+                recolherToolbar()
+            }
+        })
+        binding.mainRecyclerView.adapter = adapter
         setBehaviors()
         imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         duracaoCurta = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
@@ -63,6 +76,7 @@ class MainActivity : AppCompatActivity(),
         binding.mainBtnSearch.setOnClickListener(this)
         binding.mainSearchEditText.setOnClickListener(this)
         binding.mainSearchEditText.setOnFocusChangeListener(this)
+        binding.mainSearchEditText.setOnEditorActionListener(this)
     }
     private fun onSearch(){
         viewModel.search()
@@ -354,6 +368,17 @@ class MainActivity : AppCompatActivity(),
     override fun onEditorAction(v: TextView?, actionId: Int, keyEvent: KeyEvent?): Boolean {
         return when(actionId) {
             EditorInfo.IME_ACTION_SEARCH -> {
+                Toast.makeText(this, "SEARCH",Toast.LENGTH_SHORT).show()
+                onSearch()
+                true
+            }
+            EditorInfo.IME_ACTION_GO ->{
+                Toast.makeText(this, "GO",Toast.LENGTH_SHORT).show()
+                onSearch()
+                true
+            }
+            EditorInfo.IME_ACTION_DONE ->{
+                Toast.makeText(this, "DONE",Toast.LENGTH_SHORT).show()
                 onSearch()
                 true
             }

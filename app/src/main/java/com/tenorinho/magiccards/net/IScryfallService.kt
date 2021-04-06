@@ -10,7 +10,7 @@ import retrofit2.http.Query
 
 interface IScryfallService {
     @GET("cards/search")
-    fun getCardsByText(@Query("q") search:String, @Query("unique=cards")unique:String=""):Call<NetworkListCards>
+    fun getCardsByText(@Query("q") search:String):Call<NetworkListCards>
     @GET("cards/{id}")
     fun getCardsByUUId(@Path("id") cardId:String):Call<NetworkCard>
     @GET("cards/autocomplete")

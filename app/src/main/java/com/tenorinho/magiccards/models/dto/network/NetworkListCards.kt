@@ -12,5 +12,5 @@ data class NetworkListCards(
     @SerializedName("next_page")
     val next_page: String,
     @SerializedName("data")
-    val list:Array<NetworkCard>
+    val list:List<NetworkCard>?
 )

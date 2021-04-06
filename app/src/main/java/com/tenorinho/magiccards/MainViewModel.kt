@@ -1,15 +1,17 @@
 package com.tenorinho.magiccards
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.tenorinho.magiccards.models.domain.Card
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class MainViewModel(private val cardRepository: CardRepository) : ViewModel() {
     var isExpanded:Boolean = false
     val error = MutableLiveData<Throwable>()
-    val listCards = MutableLiveData<List<Card>>()
+    val listCards = MutableLiveData<ArrayList<Card>>()
     val searchText = MutableLiveData<String>()
+    val progressBarVisibility = MutableLiveData<Boolean>()
     val btnWManaSelected = MutableLiveData<Boolean>()
     val btnUManaSelected = MutableLiveData<Boolean>()
     val btnGManaSelected = MutableLiveData<Boolean>()
@@ -27,28 +29,27 @@ class MainViewModel(private val cardRepository: CardRepository) : ViewModel() {
         btnGManaSelected.value = false
         btnRManaSelected.value = false
         btnBManaSelected.value = false
+        progressBarVisibility.value = false
+        searchText.value = ""
     }
     fun search(){
+        progressBarVisibility.value = true
         val s = searchText.value
         if(!s.isNullOrBlank()){
-            if(btnWManaSelected.value!!){
-                s + ""
+            viewModelScope.launch{
+                cardRepository.search(s, ::onSearchResult, ::onFailure)
             }
-            else if(btnUManaSelected.value!!){
-                s + ""
-            }
-            else if(btnGManaSelected.value!!){
-                s + ""
-            }
-            else if(btnRManaSelected.value!!){
-                s + ""
-            }
-            else if(btnBManaSelected.value!!){
-                s + ""
-            }
-            // usar o cardRepository para
-            // pegar a lista de cards da API
         }
+    }
+    fun onSearchResult(list:ArrayList<Card>?){
+        if(list != null){
+            listCards.value = list
+        }
+        progressBarVisibility.value = false
+    }
+    fun onFailure(t:Throwable){
+        error.value = t
+        progressBarVisibility.value = false
     }
 }
 class MainViewModelFactory(private val cardRepository: CardRepository) : ViewModelProvider.Factory {
