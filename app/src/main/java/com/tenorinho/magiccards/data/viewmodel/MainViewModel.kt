@@ -1,9 +1,8 @@
 package com.tenorinho.magiccards
 
 import androidx.lifecycle.*
-import com.tenorinho.magiccards.models.domain.Card
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
+import com.tenorinho.magiccards.data.repository.CardRepository
+import com.tenorinho.magiccards.data.models.domain.Card
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val cardRepository: CardRepository) : ViewModel() {

@@ -1,15 +1,17 @@
-package com.tenorinho.magiccards.db
+package com.tenorinho.magiccards.data.db
 
 import android.content.Context
 import androidx.room.Room
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
-import com.tenorinho.magiccards.models.dto.db.DBCard
-import com.tenorinho.magiccards.models.dto.db.DBCardFace
-import com.tenorinho.magiccards.models.dto.db.DBImageURIs
+import androidx.room.TypeConverters
+import com.tenorinho.magiccards.data.Converters
+import com.tenorinho.magiccards.data.models.dto.db.DBCard
+import com.tenorinho.magiccards.data.models.dto.db.DBCardFace
+import com.tenorinho.magiccards.data.models.dto.db.DBImageURIs
 
 @Database(entities=arrayOf(DBCard::class, DBCardFace::class, DBImageURIs::class), version = 1, exportSchema=false)
+@TypeConverters(Converters::class)
 abstract class LocalDatabase:RoomDatabase() {
     abstract fun getCardDAO():CardDAO
     abstract fun getCardFaceDAO():CardFaceDAO

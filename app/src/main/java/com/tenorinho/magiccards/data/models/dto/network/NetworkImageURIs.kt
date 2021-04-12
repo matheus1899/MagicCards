@@ -1,7 +1,7 @@
-package com.tenorinho.magiccards.models.dto.network
+package com.tenorinho.magiccards.data.models.dto.network
 
 import com.google.gson.annotations.SerializedName
-import com.tenorinho.magiccards.models.domain.ImageURIs
+import com.tenorinho.magiccards.data.models.domain.ImageURIs
 
 data class NetworkImageURIs(
     @SerializedName("small")
@@ -18,8 +18,18 @@ data class NetworkImageURIs(
     val border_crop:String?
 ){
     fun toImageURIs():ImageURIs{
-        return ImageURIs(-1,
+        return ImageURIs(null,
             "",
+            small ?: "",
+            normal ?: "",
+            large ?: "",
+            png ?: "",
+            art_crop ?: "",
+            border_crop ?: "")
+    }
+    fun toImageURIs(uuid:String?):ImageURIs{
+        return ImageURIs(null,
+            uuid?: "",
             small ?: "",
             normal ?: "",
             large ?: "",

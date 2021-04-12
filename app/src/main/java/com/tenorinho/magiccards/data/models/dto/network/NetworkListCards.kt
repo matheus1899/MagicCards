@@ -1,4 +1,4 @@
-package com.tenorinho.magiccards.models.dto.network
+package com.tenorinho.magiccards.data.models.dto.network
 
 import com.google.gson.annotations.SerializedName
 

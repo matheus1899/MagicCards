@@ -1,10 +1,10 @@
-package com.tenorinho.magiccards.models.dto.network
+package com.tenorinho.magiccards.data.models.dto.network
 
 import android.net.Uri
 import com.google.gson.annotations.SerializedName
-import com.tenorinho.magiccards.models.domain.Card
-import com.tenorinho.magiccards.models.domain.CardFace
-import com.tenorinho.magiccards.models.domain.CardLayout
+import com.tenorinho.magiccards.data.models.domain.Card
+import com.tenorinho.magiccards.data.models.domain.CardFace
+import com.tenorinho.magiccards.data.models.domain.CardLayout
 
 data class NetworkCard(
     @SerializedName("id")
@@ -74,20 +74,20 @@ data class NetworkCard(
         lateinit var card:Card
         if(isTwoFaced(layout)){
             if(this.card_faces != null){
-                cardFaceArrayList.add(card_faces[0].toCardFace())
-                cardFaceArrayList.add(card_faces[1].toCardFace())
+                cardFaceArrayList.add(card_faces[0].toCardFace(uuid))
+                cardFaceArrayList.add(card_faces[1].toCardFace(uuid))
             }
             var print:Uri? = null
             print_search_uri?.let{
                 print = Uri.parse(it)
             }
             card = Card(
-                -1, uuid, lang, oracle_id, print, Uri.parse(rulings_uri),
+                null, uuid, lang, oracle_id, print, Uri.parse(rulings_uri),
                 Uri.parse(scryfall_uri), Uri.parse(uri), cardFaceArrayList, cmc, color_identity, colors,
                 keywords, CardLayout.getCardLayoutByString(layout), mana_cost ?: "", name,
                 oracle_text?: "", power ?: "", produced_mana, toughness ?: "",
                 type_line, artist ?: "", border_color, highres_image, image_status,
-                image_uris?.toImageURIs(), rarity, textless
+                image_uris?.toImageURIs(uuid), rarity, textless
             )
         }
         else{
@@ -96,12 +96,12 @@ data class NetworkCard(
                 print = Uri.parse(it)
             }
             card = Card(
-                -1, uuid, lang, oracle_id, print, Uri.parse(rulings_uri),
+                null, uuid, lang, oracle_id, print, Uri.parse(rulings_uri),
                 Uri.parse(scryfall_uri), Uri.parse(uri), null, cmc, color_identity, colors,
                 keywords, CardLayout.getCardLayoutByString(layout), mana_cost ?: "", name,
                 oracle_text?: "", power ?: "", produced_mana, toughness ?: "",
                 type_line, artist ?: "", border_color, highres_image, image_status,
-                image_uris?.toImageURIs(), rarity, textless
+                image_uris?.toImageURIs(uuid), rarity, textless
             )
         }
         return card

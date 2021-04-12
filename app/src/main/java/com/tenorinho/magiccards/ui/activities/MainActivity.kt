@@ -21,18 +21,20 @@ import androidx.lifecycle.ViewModelProvider
 import com.tenorinho.magiccards.App
 import com.tenorinho.magiccards.MainViewModel
 import com.tenorinho.magiccards.MainViewModelFactory
+import com.tenorinho.magiccards.data.viewmodel.TesteRoomViewModel
+import com.tenorinho.magiccards.data.viewmodel.TesteRoomViewModelFactory
 import com.tenorinho.magiccards.databinding.ActivityMainBinding
-import com.tenorinho.magiccards.ui.CardAdapter
-import kotlinx.coroutines.CoroutineScope
-import kotlin.coroutines.CoroutineContext
+import com.tenorinho.magiccards.ui.adapters.CardAdapter
 
-class MainActivity : AppCompatActivity(),
-    View.OnClickListener,
+class MainActivity : AppCompatActivity()
+    /*View.OnClickListener,
     TextView.OnEditorActionListener,
-    View.OnFocusChangeListener{
+    View.OnFocusChangeListener*/
+{
     private lateinit var binding:ActivityMainBinding
-    private lateinit var viewModel:MainViewModel
-    private lateinit var adapter:CardAdapter
+    //private lateinit var viewModel:MainViewModel
+    private lateinit var viewModel:TesteRoomViewModel
+    private lateinit var adapter: CardAdapter
     private var duracaoCurta:Long = 0L
     private var duracaoMedia:Long = 0L
     private var duracaoLonga:Long = 0L
@@ -43,7 +45,7 @@ class MainActivity : AppCompatActivity(),
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         init()
     }
-    private fun init(){
+    /*private fun init(){
         adapter = CardAdapter()
         getViewModel()
         binding.viewModel = viewModel
@@ -61,13 +63,37 @@ class MainActivity : AppCompatActivity(),
         duracaoCurta = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
         duracaoMedia = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
         duracaoLonga = resources.getInteger(android.R.integer.config_longAnimTime).toLong()
+    }*/
+    private fun init(){
+        adapter = CardAdapter()
+        getViewModel()
+        //binding.viewModel = viewModel
+        viewModel.error.observe(this, Observer { showLongToast(it.message)})
+        viewModel.listCards.observe(this, Observer{
+            adapter.updateList(it)
+            //viewModel.progressBarVisibility.value = false
+            //if(viewModel.isExpanded){
+            //    recolherToolbar()
+            //}
+        })
+        binding.mainRecyclerView.adapter = adapter
+        //setBehaviors()
+        imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        duracaoCurta = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+        duracaoMedia = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+        duracaoLonga = resources.getInteger(android.R.integer.config_longAnimTime).toLong()
     }
-    private fun getViewModel(){
+    /*private fun getViewModel(){
         val app = application as App
         val factory = MainViewModelFactory(app.cardRepository)
         viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
+    }*/
+    private fun getViewModel(){
+        val app = application as App
+        val factory = TesteRoomViewModelFactory(app.cardRepository)
+        viewModel = ViewModelProvider(this, factory).get(TesteRoomViewModel::class.java)
     }
-    private fun setBehaviors(){
+    /*private fun setBehaviors(){
         binding.mainBtnWhite.setOnClickListener(this)
         binding.mainBtnBlue.setOnClickListener(this)
         binding.mainBtnGreen.setOnClickListener(this)
@@ -77,17 +103,17 @@ class MainActivity : AppCompatActivity(),
         binding.mainSearchEditText.setOnClickListener(this)
         binding.mainSearchEditText.setOnFocusChangeListener(this)
         binding.mainSearchEditText.setOnEditorActionListener(this)
-    }
-    private fun onSearch(){
+    }*/
+    /*private fun onSearch(){
         viewModel.search()
-    }
-    override fun onResume(){
+    }*/
+    /*override fun onResume(){
         super.onResume()
         if(viewModel.isExpanded){
             expandirToolbar()
             binding.mainSearchEditText.requestFocus()
         }
-    }
+    }*/
     private fun expandirToolbar(){
         binding.mainSearchEditText.apply{
             alpha = 0F
@@ -179,7 +205,7 @@ class MainActivity : AppCompatActivity(),
     private fun fecharTeclado(v: EditText){
         imm.hideSoftInputFromWindow(v.windowToken, 0)
     }
-    override fun onClick(v: View?) {
+    /*override fun onClick(v: View?) {
         if(v != null){
             when(v.id){
                 R.id.main_btn_search -> {
@@ -345,8 +371,8 @@ class MainActivity : AppCompatActivity(),
                 }
             }
         }
-    }
-    override fun onFocusChange(v: View?, hasFocus: Boolean) {
+    }*/
+    /*override fun onFocusChange(v: View?, hasFocus: Boolean) {
         if(v != null){
             when(v.id){
                 R.id.main_search_edit_text -> {
@@ -364,8 +390,8 @@ class MainActivity : AppCompatActivity(),
                 }
             }
         }
-    }
-    override fun onEditorAction(v: TextView?, actionId: Int, keyEvent: KeyEvent?): Boolean {
+    }*/
+    /*override fun onEditorAction(v: TextView?, actionId: Int, keyEvent: KeyEvent?): Boolean {
         return when(actionId) {
             EditorInfo.IME_ACTION_SEARCH -> {
                 Toast.makeText(this, "SEARCH",Toast.LENGTH_SHORT).show()
@@ -384,7 +410,7 @@ class MainActivity : AppCompatActivity(),
             }
             else -> false
         }
-    }
+    }*/
     private fun showLongToast(message:String?){
         Toast.makeText(this, message ?: "NO MESSAGE", Toast.LENGTH_LONG).show()
     }

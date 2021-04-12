@@ -1,7 +1,7 @@
-package com.tenorinho.magiccards.models.domain
+package com.tenorinho.magiccards.data.models.domain
 
 data class CardFace(
-    val id:Int,
+    var id:Long? = null,
     val uuid_card:String,
     val artist: String?,
     val color_indicator: Array<String>?,

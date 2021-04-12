@@ -1,8 +1,8 @@
 package com.tenorinho.magiccards.net
 
-import com.tenorinho.magiccards.models.dto.network.NetworkCard
-import com.tenorinho.magiccards.models.dto.network.NetworkCatalog
-import com.tenorinho.magiccards.models.dto.network.NetworkListCards
+import com.tenorinho.magiccards.data.models.dto.network.NetworkCard
+import com.tenorinho.magiccards.data.models.dto.network.NetworkCatalog
+import com.tenorinho.magiccards.data.models.dto.network.NetworkListCards
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

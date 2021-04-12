@@ -1,4 +1,4 @@
-package com.tenorinho.magiccards.ui
+package com.tenorinho.magiccards.ui.adapters
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,7 +9,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tenorinho.magiccards.R
-import com.tenorinho.magiccards.models.domain.Card
+import com.tenorinho.magiccards.data.models.domain.Card
+import com.tenorinho.magiccards.data.models.domain.CardLayout
 
 class CardAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     var cards:ArrayList<Card> = ArrayList()
@@ -36,11 +37,13 @@ class CardAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         }
         fun bind(card:Card?){
             if(card != null) {
-                if (card.isTwoFaced) {
+                if (card.layout == CardLayout.TRANSFORM ||
+                    card.layout == CardLayout.MODAL_DFC ||
+                    card.layout == CardLayout.DOUBLE_FACED_TOKEN) {
                     val cardFace = card.card_faces?.get(0)
-                    if(cardFace != null && cardFace.image_uris != null){
+                    if(cardFace?.image_uris != null){
                         Log.v("TAG", "bind: CardFace = NOT NULL")
-                        Glide.with(imgCard.context).load(cardFace.image_uris.normal).into(imgCard)
+                        Glide.with(imgCard.context).load(cardFace.image_uris.small).into(imgCard)
                     }
                     else{
                         Log.v("TAG", "bind: CardFace = NULL")
@@ -51,7 +54,7 @@ class CardAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>(){
                 else {
                     if(card.image_uris != null && !card.image_uris.normal.isNullOrBlank()){
                         Log.v("TAG", "bind: ImageUris = NOT NULL")
-                        Glide.with(imgCard.context).load(card.image_uris.normal).into(imgCard)
+                        Glide.with(imgCard.context).load(card.image_uris.small).into(imgCard)
                     }
                     else{
                         Log.v("TAG", "bind: ImageUris = NULL")

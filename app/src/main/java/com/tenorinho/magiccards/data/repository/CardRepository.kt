@@ -1,35 +1,34 @@
-package com.tenorinho.magiccards
+package com.tenorinho.magiccards.data.repository
 
-import android.net.Uri
-import android.util.Log
-import com.tenorinho.magiccards.db.CardDAO
-import com.tenorinho.magiccards.db.CardFaceDAO
-import com.tenorinho.magiccards.db.ImageURIsDAO
-import com.tenorinho.magiccards.models.domain.Card
-import com.tenorinho.magiccards.models.domain.CardFace
-import com.tenorinho.magiccards.models.domain.CardLayout
-import com.tenorinho.magiccards.models.domain.ImageURIs
-import com.tenorinho.magiccards.models.dto.db.DBCardFace
-import com.tenorinho.magiccards.models.dto.db.DBImageURIs
-import com.tenorinho.magiccards.models.dto.network.NetworkCard
-import com.tenorinho.magiccards.models.dto.network.NetworkListCards
+import com.tenorinho.magiccards.data.db.CardDAO
+import com.tenorinho.magiccards.data.db.CardFaceDAO
+import com.tenorinho.magiccards.data.db.ImageURIsDAO
+import com.tenorinho.magiccards.data.models.domain.Card
+import com.tenorinho.magiccards.data.models.domain.CardLayout
+import com.tenorinho.magiccards.data.models.dto.db.DBCard
+import com.tenorinho.magiccards.data.models.dto.db.DBCardFace
+import com.tenorinho.magiccards.data.models.dto.db.DBImageURIs
+import com.tenorinho.magiccards.data.models.dto.network.NetworkCard
+import com.tenorinho.magiccards.data.models.dto.network.NetworkListCards
 import com.tenorinho.magiccards.net.IScryfallService
 import com.tenorinho.magiccards.net.RetrofitConfig
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.NullPointerException
 
-class CardRepository(val cardDAO: CardDAO,
-                     val cardFaceDAO: CardFaceDAO,
-                     val imageURIsDAO: ImageURIsDAO){
+class CardRepository(private val cardDAO: CardDAO,
+                     private val cardFaceDAO: CardFaceDAO,
+                     private val imageURIsDAO: ImageURIsDAO) {
     private val service = RetrofitConfig.getRetrofitScryfallService().create(IScryfallService::class.java)
 
-    fun search(searchText:String, success: (ArrayList<Card>?) -> Unit, failure: (Throwable) -> Unit){
+    fun search(searchText: String, success: (ArrayList<Card>?) -> Unit, failure: (Throwable) -> Unit) {
         val listCards = ArrayList<Card>()
         val callback = service.getCardsByText(searchText)
         callback.enqueue(object : Callback<NetworkListCards> {
-            override fun onResponse(call: Call<NetworkListCards>, response: Response<NetworkListCards>) {
+            override fun onResponse(
+                call: Call<NetworkListCards>,
+                response: Response<NetworkListCards>
+            ) {
                 try {
                     if (response.code() == 200) {
                         val body = response.body()
@@ -43,7 +42,7 @@ class CardRepository(val cardDAO: CardDAO,
                             failure(Throwable("Body is null"))
                         }
                     }
-                    else if(response.code() == 404){
+                    else if (response.code() == 404) {
                         failure(Throwable("0 cards found with \"${searchText}\""))
                     }
                 }
@@ -51,10 +50,164 @@ class CardRepository(val cardDAO: CardDAO,
                     failure(Throwable(e.message.toString() + " | " + e.cause))
                 }
             }
+
             override fun onFailure(call: Call<NetworkListCards>, t: Throwable) {
                 failure(t)
             }
         })
+    }
+    suspend fun getAllCardsFromDatabase(success:(ArrayList<Card>) -> Unit, failure: (Throwable) -> Unit){
+        val arrayListCard = ArrayList<Card>()
+        val listCards = cardDAO.getAllCards()
+        if(listCards != null){
+            if(listCards.isEmpty()){
+                failure(Throwable("Lista está vazia"))
+            }
+            else{
+                for(dbcard in listCards){
+                    var card:Card
+                    if(dbcard.layout == CardLayout.DOUBLE_FACED_TOKEN.layout ||
+                        dbcard.layout == CardLayout.TRANSFORM.layout ||
+                        dbcard.layout == CardLayout.MODAL_DFC.layout){
+
+                        var dbcardFace:DBCardFace? = null
+                        var dbImgURIs:DBImageURIs? = null
+
+                        if(dbcard.idCardFace != null){
+                            dbcardFace = cardFaceDAO.getCardFaceByID(dbcard.idCardFace)
+                        }
+                        if(dbcardFace?.id_imgURIs != null){
+                            dbImgURIs = imageURIsDAO.getImageURIsByID(dbcardFace.id_imgURIs!!)
+                        }
+                        card = DBCard.toDomain(dbcard, dbcardFace, dbImgURIs)
+                    }
+                    else if(dbcard.layout == CardLayout.FLIP.layout){
+                        var dbcardFace:DBCardFace? = null
+                        if(dbcard.idCardFace != null){
+                            dbcardFace = cardFaceDAO.getCardFaceByID(dbcard.idCardFace)
+                        }
+                        card = DBCard.toDomain(dbcard, dbcardFace, null)
+                    }
+                    else{
+                        card = DBCard.toDomain(dbcard, null, null)
+                    }
+                    arrayListCard.add(card)
+                }
+                success(arrayListCard)
+            }
+        }
+        else{
+            failure(Throwable("Lista está vazia"))
+        }
+    }
+    suspend fun loadRandomCard(success:(Card?)->Unit, failure:(Throwable)->Unit) {
+        val callback = service.getRandomCard()
+        callback.enqueue(object : Callback<NetworkCard> {
+            override fun onResponse(call: Call<NetworkCard>, response: Response<NetworkCard>) {
+                try {
+                    if (response.code() == 200) {
+                        val body = response.body()
+                        if (body != null) {
+                            success(body.toCard())
+                        } else {
+                            failure(Throwable("retorno nulo"))
+                        }
+                    } else {
+                        failure(Throwable("Response Code: @{response.code()}"))
+                    }
+                } catch (e: Exception) {
+                    failure(Throwable(e.message.toString() + " | " + e.cause))
+                }
+            }
+            override fun onFailure(call: Call<NetworkCard>, t: Throwable) {
+                failure(t)
+            }
+        })
+    }
+    suspend fun saveCard(card:Card?, success:(Long)->Unit, failure:(Throwable)->Unit) {
+        if (card != null) {
+            val idCard = card.id
+            try {
+                if(idCard == null) {
+                    if (card.layout == CardLayout.MODAL_DFC ||
+                        card.layout == CardLayout.TRANSFORM ||
+                        card.layout == CardLayout.DOUBLE_FACED_TOKEN
+                    ) {
+                        val dbImg = DBImageURIs.fromDomain(
+                            card.card_faces?.get(0)?.image_uris,
+                            card.card_faces?.get(1)?.image_uris
+                        )
+                        val dbImgID = imageURIsDAO.addImageURIs(dbImg)
+                        card.card_faces?.get(0)?.image_uris?.id = dbImgID
+                        card.card_faces?.get(1)?.image_uris?.id = dbImgID
+                        val dbCardFace =
+                            DBCardFace.fromDomain(card.card_faces?.get(0), card.card_faces?.get(1))
+                        val idCardFace = cardFaceDAO.addCardFace(dbCardFace)
+                        card.card_faces?.get(0)?.id = idCardFace
+                        card.card_faces?.get(1)?.id = idCardFace
+                        val id = cardDAO.addCard(DBCard.fromDomain(card))
+                        success(id)
+                    }
+                    else if (card.layout == CardLayout.FLIP) {
+                        val dbCardFace =
+                            DBCardFace.fromDomain(card.card_faces?.get(0), card.card_faces?.get(1))
+                        val idCardFace = cardFaceDAO.addCardFace(dbCardFace)
+                        card.card_faces?.get(0)?.id = idCardFace
+                        card.card_faces?.get(1)?.id = idCardFace
+                        val id = cardDAO.addCard(DBCard.fromDomain(card))
+                        success(id)
+                    } else {
+                        val id = cardDAO.addCard(DBCard.fromDomain(card))
+                        success(id)
+                    }
+                }
+                else if(!cardDAO.cardExistsByID(idCard)){
+                    if (card.layout == CardLayout.MODAL_DFC ||
+                        card.layout == CardLayout.TRANSFORM ||
+                        card.layout == CardLayout.DOUBLE_FACED_TOKEN
+                    ) {
+                        val dbImg = DBImageURIs.fromDomain(
+                            card.card_faces?.get(0)?.image_uris,
+                            card.card_faces?.get(1)?.image_uris
+                        )
+                        val dbImgID = imageURIsDAO.addImageURIs(dbImg)
+                        card.card_faces?.get(0)?.image_uris?.id = dbImgID
+                        card.card_faces?.get(1)?.image_uris?.id = dbImgID
+                        val dbCardFace =
+                            DBCardFace.fromDomain(card.card_faces?.get(0), card.card_faces?.get(1))
+                        val idCardFace = cardFaceDAO.addCardFace(dbCardFace)
+                        card.card_faces?.get(0)?.id = idCardFace
+                        card.card_faces?.get(1)?.id = idCardFace
+                        val id = cardDAO.addCard(DBCard.fromDomain(card))
+                        success(id)
+                    }
+                    else if (card.layout == CardLayout.FLIP) {
+                        val dbCardFace =
+                            DBCardFace.fromDomain(card.card_faces?.get(0), card.card_faces?.get(1))
+                        val idCardFace = cardFaceDAO.addCardFace(dbCardFace)
+                        card.card_faces?.get(0)?.id = idCardFace
+                        card.card_faces?.get(1)?.id = idCardFace
+                        val id = cardDAO.addCard(DBCard.fromDomain(card))
+                        success(id)
+                    } else {
+                        val id = cardDAO.addCard(DBCard.fromDomain(card))
+                        success(id)
+                    }
+                }
+                else{
+                    failure(Throwable("Card já está salvo"))
+                }
+            }
+            catch (ex: Exception) {
+                failure(Throwable(ex.message))
+            }
+        }
+        else {
+            failure(Throwable("Nenhum card para ser salvo"))
+        }
+    }
+    suspend fun getIdByCardName(cardName:String, success:(Long?)->Unit){
+        success(cardDAO.getIdByCardName(cardName))
     }
     /*suspend fun load(uuid: String): Card? {
         var dbImgURIs : DBImageURIs? = null
@@ -210,10 +363,7 @@ class CardRepository(val cardDAO: CardDAO,
                 layout == CardLayout.DOUBLE_FACED_TOKEN.layout ||
                 layout == CardLayout.TRANSFORM.layout
     }
-    private fun splitToArray(s:String):Array<String>{
-        val list = s.split(":")
-        return Array(list.size){
-            list[it]
-        }
+    private suspend fun  saveCardInDatabase(card:Card){
+
     }
 }

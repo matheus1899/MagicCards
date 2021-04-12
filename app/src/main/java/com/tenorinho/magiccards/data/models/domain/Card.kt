@@ -1,9 +1,9 @@
-package com.tenorinho.magiccards.models.domain
+package com.tenorinho.magiccards.data.models.domain
 
 import android.net.Uri
 
 data class Card(
-    val id:Int,
+    var id:Long? = null,
     val uuid:String,
     val lang:String,
     val oracle_id:String,
@@ -31,22 +31,7 @@ data class Card(
     val image_uris: ImageURIs?,
     val rarity:String,
     val textless:Boolean,
-){
-    val isDistinctFaces:Boolean
-        get() = layout == CardLayout.SPLIT ||
-                layout == CardLayout.FLIP ||
-                layout == CardLayout.TRANSFORM ||
-                layout == CardLayout.DOUBLE_FACED_TOKEN ||
-                layout == CardLayout.MODAL_DFC
-
-    val hasCardFaces:Boolean
-        get() =  card_faces != null
-
-    val isTwoFaced:Boolean
-        get() = layout == CardLayout.MODAL_DFC ||
-                layout == CardLayout.DOUBLE_FACED_TOKEN ||
-                layout == CardLayout.TRANSFORM
-}
+)
 enum class CardLayout(val layout:String) {
     NORMAL("normal"),
     SPLIT("split"),
@@ -67,7 +52,6 @@ enum class CardLayout(val layout:String) {
     HOST("host"),
     ART_SERIES("art_series"),
     DOUBLE_SIZED("double_sized");
-
     companion object{
         fun getCardLayoutByString(s:String):CardLayout{
             when(s){

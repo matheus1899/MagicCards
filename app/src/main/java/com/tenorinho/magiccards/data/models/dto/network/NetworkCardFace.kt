@@ -1,7 +1,7 @@
-package com.tenorinho.magiccards.models.dto.network
+package com.tenorinho.magiccards.data.models.dto.network
 
 import com.google.gson.annotations.SerializedName
-import com.tenorinho.magiccards.models.domain.CardFace
+import com.tenorinho.magiccards.data.models.domain.CardFace
 
 data class NetworkCardFace(
     @SerializedName("artist")
@@ -31,8 +31,25 @@ data class NetworkCardFace(
 ){
     fun toCardFace(): CardFace {
         return CardFace(
-            -1,
+            null,
             "",
+            artist,
+            color_indicator,
+            colors,
+            image_uris?.toImageURIs(),
+            mana_cost,
+            name,
+            oracle_text,
+            power,
+            toughness,
+            type_line
+
+        )
+    }
+    fun toCardFace(uuid:String?): CardFace {
+        return CardFace(
+            null,
+            uuid ?: "",
             artist,
             color_indicator,
             colors,
