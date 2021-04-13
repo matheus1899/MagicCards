@@ -11,31 +11,40 @@ import com.bumptech.glide.Glide
 import com.tenorinho.magiccards.R
 import com.tenorinho.magiccards.data.models.domain.Card
 import com.tenorinho.magiccards.data.models.domain.CardLayout
+import com.tenorinho.magiccards.ui.fragments.ListCardsFragment
 
-class CardAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class CardAdapter(val fragment: ListCardsFragment) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var cards:ArrayList<Card> = ArrayList()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return CardViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_card, parent, false))
     }
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val h = holder as CardViewHolder
-        h.bind(cards[position])
+        h.bind(cards[position], position, ::onItemClick)
     }
     override fun getItemCount(): Int = cards.size
     fun updateList(listCards:ArrayList<Card>){
         cards = listCards
         notifyDataSetChanged()
     }
+    private fun onItemClick(position:Int){
+        fragment.onItemClick(position)
+    }
     private class CardViewHolder:RecyclerView.ViewHolder{
         val imgCard:ImageView
         val txtName:TextView
         val txtTypeline:TextView
+        val root : View
         constructor(v: View):super(v){
+            root = v
             imgCard = v.findViewById(R.id.item_card_img)
             txtName = v.findViewById(R.id.item_card_txt_name)
             txtTypeline = v.findViewById(R.id.item_card_txt_type_line)
         }
-        fun bind(card:Card?){
+        fun bind(card:Card?, position: Int, function:(Int)->Unit){
+            root.setOnClickListener { function(position) }
             if(card != null) {
                 if (card.layout == CardLayout.TRANSFORM ||
                     card.layout == CardLayout.MODAL_DFC ||
@@ -52,7 +61,7 @@ class CardAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>(){
                     }
                 }
                 else {
-                    if(card.image_uris != null && !card.image_uris.normal.isNullOrBlank()){
+                    if(card.image_uris != null && !card.image_uris.small.isNullOrBlank()){
                         Log.v("TAG", "bind: ImageUris = NOT NULL")
                         Glide.with(imgCard.context).load(card.image_uris.small).into(imgCard)
                     }

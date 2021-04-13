@@ -16,11 +16,9 @@ class SplashActivity : AppCompatActivity(){
     override fun onResume() {
         super.onResume()
         if(first){
-            //Handler().postDelayed({ navigateToShowRandomCardActivity() }, 2000)
             Handler().postDelayed({ navigateToMainActivity() }, 2000)
         }
     }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putBoolean(KEY, false)
@@ -33,10 +31,6 @@ class SplashActivity : AppCompatActivity(){
     }
     private fun navigateToMainActivity(){
         startActivity(Intent(this, MainActivity::class.java))
-        finish()
-    }
-    private fun navigateToShowRandomCardActivity(){
-        startActivity(Intent(this, ShowRandomCardActivity::class.java))
         finish()
     }
 }

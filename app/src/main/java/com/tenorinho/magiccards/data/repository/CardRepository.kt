@@ -50,7 +50,6 @@ class CardRepository(private val cardDAO: CardDAO,
                     failure(Throwable(e.message.toString() + " | " + e.cause))
                 }
             }
-
             override fun onFailure(call: Call<NetworkListCards>, t: Throwable) {
                 failure(t)
             }

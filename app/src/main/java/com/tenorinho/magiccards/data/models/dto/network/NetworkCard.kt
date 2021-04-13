@@ -69,10 +69,31 @@ data class NetworkCard(
                 layout == CardLayout.DOUBLE_FACED_TOKEN.layout ||
                 layout == CardLayout.TRANSFORM.layout
     }
+    private fun isFlip(layout:String):Boolean{
+        return layout == CardLayout.FLIP.layout
+    }
     fun toCard():Card{
         val cardFaceArrayList = ArrayList<CardFace>(2)
         lateinit var card:Card
         if(isTwoFaced(layout)){
+            if(this.card_faces != null){
+                cardFaceArrayList.add(card_faces[0].toCardFace(uuid))
+                cardFaceArrayList.add(card_faces[1].toCardFace(uuid))
+            }
+            var print:Uri? = null
+            print_search_uri?.let{
+                print = Uri.parse(it)
+            }
+            card = Card(
+                null, uuid, lang, oracle_id, print, Uri.parse(rulings_uri),
+                Uri.parse(scryfall_uri), Uri.parse(uri), cardFaceArrayList, cmc, color_identity, colors,
+                keywords, CardLayout.getCardLayoutByString(layout), mana_cost ?: "", name,
+                oracle_text?: "", power ?: "", produced_mana, toughness ?: "",
+                type_line, artist ?: "", border_color, highres_image, image_status,
+                image_uris?.toImageURIs(uuid), rarity, textless
+            )
+        }
+        else if(isFlip(layout)) {
             if(this.card_faces != null){
                 cardFaceArrayList.add(card_faces[0].toCardFace(uuid))
                 cardFaceArrayList.add(card_faces[1].toCardFace(uuid))

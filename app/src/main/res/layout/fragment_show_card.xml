@@ -6,18 +6,16 @@
     <data>
         <variable
             name="viewModel"
-            type="com.tenorinho.magiccards.data.viewmodel.ShowRandomCardViewModel" />
+            type="com.tenorinho.magiccards.data.viewmodel.MainViewModel" />
     </data>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/show_random_card_toolbar"
+                android:id="@+id/show_card_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:background="@color/colorPrimary"
@@ -25,14 +23,14 @@
                 android:maxHeight="118dp"
                 android:minHeight="64dp"
                 android:padding="0dp"
+                android:theme="@style/ToolbarTheme"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:title="@string/activity_main_title"
                 app:titleTextColor="@android:color/white" />
-
             <ImageView
-                android:id="@+id/show_random_card_img_1"
+                android:id="@+id/show_card_img_1"
                 android:layout_width="210dp"
                 android:layout_height="280dp"
                 android:layout_marginTop="16dp"
@@ -40,11 +38,10 @@
                 android:src="@drawable/ic_no_card_image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/show_random_card_toolbar"
+                app:layout_constraintTop_toBottomOf="@id/show_card_toolbar"
                 tools:src="@drawable/magic_card_transform_1" />
-
             <ImageView
-                android:id="@+id/show_random_card_img_2"
+                android:id="@+id/show_card_img_2"
                 android:layout_width="210dp"
                 android:layout_height="280dp"
                 android:layout_marginTop="16dp"
@@ -52,25 +49,22 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/show_random_card_toolbar"
+                app:layout_constraintTop_toBottomOf="@id/show_card_toolbar"
                 tools:src="@drawable/magic_card_transform_2" />
-
             <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/show_random_card_barrier_imgs_1"
+                android:id="@+id/show_card_barrier_imgs_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
-                app:constraint_referenced_ids="show_random_card_img_2,show_random_card_img_1" />
-
+                app:constraint_referenced_ids="show_card_img_2,show_card_img_1" />
             <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/show_random_card_barrier_imgs_2"
+                android:id="@+id/show_card_barrier_imgs_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="end"
-                app:constraint_referenced_ids="show_random_card_img_2,show_random_card_img_1" />
-
+                app:constraint_referenced_ids="show_card_img_2,show_card_img_1" />
             <ImageButton
-                android:id="@+id/show_random_card_btn_rotate"
+                android:id="@+id/show_card_btn_rotate"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginTop="32dp"
@@ -78,26 +72,25 @@
                 android:elevation="1dp"
                 android:src="@drawable/ic_two_curved_24"
                 android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="@id/show_random_card_barrier_imgs_2"
-                app:layout_constraintStart_toEndOf="@id/show_random_card_barrier_imgs_2"
-                app:layout_constraintTop_toBottomOf="@id/show_random_card_toolbar" />
-
+                app:layout_constraintEnd_toEndOf="@id/show_card_barrier_imgs_2"
+                app:layout_constraintStart_toEndOf="@id/show_card_barrier_imgs_2"
+                app:layout_constraintTop_toBottomOf="@id/show_card_toolbar" />
             <Button
-                android:id="@+id/show_random_card_btn_load_random"
+                android:id="@+id/show_card_btn_load"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_btn_random"
                 android:elevation="4dp"
+                android:visibility="gone"
                 android:text="@string/random"
                 android:textColor="#FFF"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/show_random_card_btn_save_card"
-                app:layout_constraintTop_toBottomOf="@+id/show_random_card_txt_oracle" />
-
+                app:layout_constraintStart_toEndOf="@id/show_card_btn_save"
+                app:layout_constraintTop_toBottomOf="@+id/show_card_txt_oracle" />
             <Button
-                android:id="@+id/show_random_card_btn_save_card"
+                android:id="@+id/show_card_btn_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -105,16 +98,16 @@
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_btn_random"
                 android:elevation="4dp"
+                android:visibility="gone"
                 android:text="@string/save"
                 android:textColor="#FFF"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/show_random_card_btn_load_random"
+                app:layout_constraintEnd_toStartOf="@id/show_card_btn_load"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/show_random_card_txt_oracle" />
-
+                app:layout_constraintTop_toBottomOf="@+id/show_card_txt_oracle" />
             <TextView
-                android:id="@+id/show_random_card_txt_name"
+                android:id="@+id/show_card_txt_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -125,14 +118,13 @@
                 android:text="@{viewModel.textName}"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/show_random_card_txt_typeline"
-                app:layout_constraintEnd_toStartOf="@id/show_random_card_linear"
+                app:layout_constraintBottom_toTopOf="@id/show_card_txt_typeline"
+                app:layout_constraintEnd_toStartOf="@id/show_card_linear"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/show_random_card_barrier_imgs_1"
+                app:layout_constraintTop_toBottomOf="@id/show_card_barrier_imgs_1"
                 tools:text="Afflicted Deserter" />
-
             <TextView
-                android:id="@+id/show_random_card_txt_typeline"
+                android:id="@+id/show_card_txt_typeline"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -141,14 +133,13 @@
                 android:fontFamily="serif"
                 android:maxLines="2"
                 android:text="@{viewModel.textTypeLine}"
-                app:layout_constraintBottom_toTopOf="@id/show_random_card_txt_oracle"
+                app:layout_constraintBottom_toTopOf="@id/show_card_txt_oracle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/show_random_card_txt_name"
+                app:layout_constraintTop_toBottomOf="@+id/show_card_txt_name"
                 tools:text="Creature - Human Werewolf" />
-
             <TextView
-                android:id="@+id/show_random_card_txt_oracle"
+                android:id="@+id/show_card_txt_oracle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -158,11 +149,10 @@
                 android:text="@{viewModel.textOracle}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/show_random_card_txt_typeline"
+                app:layout_constraintTop_toBottomOf="@+id/show_card_txt_typeline"
                 tools:text="At the beginning of each upkeep, if no spells were cast last turn, transform Afflicted Deserter.\n\nThe rising of the first full moon eliminated any doubt as to the horrible truth lurking within." />
-
             <TextView
-                android:id="@+id/show_random_card_txt_power_toughness"
+                android:id="@+id/show_card_txt_power_toughness"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -171,88 +161,75 @@
                 android:text="@{viewModel.textPowerToughness}"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/show_random_card_txt_oracle"
+                app:layout_constraintTop_toBottomOf="@+id/show_card_txt_oracle"
                 tools:text="3/2" />
-
             <LinearLayout
-                android:id="@+id/show_random_card_linear"
+                android:id="@+id/show_card_linear"
                 android:layout_width="wrap_content"
                 android:layout_height="28dp"
                 android:layout_marginEnd="20dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/show_random_card_txt_name"
-                app:layout_constraintTop_toTopOf="@id/show_random_card_txt_name">
-
+                app:layout_constraintStart_toEndOf="@id/show_card_txt_name"
+                app:layout_constraintTop_toTopOf="@id/show_card_txt_name">
                 <ImageView
-                    android:id="@+id/show_random_card_img_mana_big"
+                    android:id="@+id/show_card_img_mana_big"
                     android:layout_width="wrap_content"
                     android:layout_height="24dp"
                     android:visibility="gone" />
-
                 <ImageView
-                    android:id="@+id/show_random_card_img_mana_1"
+                    android:id="@+id/show_card_img_mana_1"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:visibility="gone" />
-
                 <ImageView
-                    android:id="@+id/show_random_card_img_mana_2"
+                    android:id="@+id/show_card_img_mana_2"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:visibility="gone" />
-
                 <ImageView
-                    android:id="@+id/show_random_card_img_mana_3"
+                    android:id="@+id/show_card_img_mana_3"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:visibility="gone" />
-
                 <ImageView
-                    android:id="@+id/show_random_card_img_mana_4"
+                    android:id="@+id/show_card_img_mana_4"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:visibility="gone" />
-
                 <ImageView
-                    android:id="@+id/show_random_card_img_mana_5"
+                    android:id="@+id/show_card_img_mana_5"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:visibility="gone" />
-
                 <ImageView
-                    android:id="@+id/show_random_card_img_mana_6"
+                    android:id="@+id/show_card_img_mana_6"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:visibility="gone" />
-
                 <ImageView
-                    android:id="@+id/show_random_card_img_mana_7"
+                    android:id="@+id/show_card_img_mana_7"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:visibility="gone" />
-
                 <ImageView
-                    android:id="@+id/show_random_card_img_mana_8"
+                    android:id="@+id/show_card_img_mana_8"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:visibility="gone" />
-
                 <ImageView
-                    android:id="@+id/show_random_card_img_mana_9"
+                    android:id="@+id/show_card_img_mana_9"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:visibility="gone" />
-
                 <ImageView
-                    android:id="@+id/show_random_card_img_mana_10"
+                    android:id="@+id/show_card_img_mana_10"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:visibility="gone" />
             </LinearLayout>
-
             <ProgressBar
-                android:id="@+id/show_random_card_progress_bar"
+                android:id="@+id/show_card_progress_bar"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
@@ -260,9 +237,9 @@
                 android:indeterminate="true"
                 android:indeterminateOnly="true"
                 android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@+id/show_random_card_img_1"
+                app:layout_constraintEnd_toStartOf="@+id/show_card_img_1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/show_random_card_toolbar" />
+                app:layout_constraintTop_toBottomOf="@+id/show_card_toolbar" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
