@@ -65,9 +65,6 @@ class ListCardsFragment: Fragment(),
         viewModel.listCards.observe(requireActivity(), Observer{
             adapter.updateList(it)
             viewModel.progressBarVisibility.value = false
-            if(viewModel.isExpanded){
-                recolherToolbar()
-            }
         })
         return binding.root
     }
@@ -81,7 +78,10 @@ class ListCardsFragment: Fragment(),
         viewModel = ViewModelProvider(requireActivity(), factory).get(MainViewModel::class.java)
     }
     private fun showLongToast(message:String?){
-        Toast.makeText(activity, message ?: "NO MESSAGE", Toast.LENGTH_LONG).show()
+        if(message.isNullOrEmpty()){
+            return
+        }
+        Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
     }
     private fun setBehaviors(){
         binding.listCardsBtnWhite.setOnClickListener(this)
@@ -97,7 +97,7 @@ class ListCardsFragment: Fragment(),
     private fun abrirTeclado(){
         imm.showSoftInput(binding.listCardsSearchEditText, 0)
     }
-    private fun fecharTeclado(v: EditText){
+    private fun fecharTeclado(v: View){
         imm.hideSoftInputFromWindow(v.windowToken, 0)
     }
     private fun onSearch(){
@@ -109,6 +109,11 @@ class ListCardsFragment: Fragment(),
             expandirToolbar()
             binding.listCardsSearchEditText.requestFocus()
         }
+        if(viewModel.whiteSelected){ onButtonManaClicked("white", true) }
+        else if(viewModel.blueSelected) { onButtonManaClicked("blue", true) }
+        else if(viewModel.greenSelected) { onButtonManaClicked("green", true) }
+        else if(viewModel.redSelected) { onButtonManaClicked("red", true) }
+        else if(viewModel.blackSelected) { onButtonManaClicked("black", true) }
     }
     private fun expandirToolbar(){
         binding.listCardsSearchEditText.apply{
@@ -145,19 +150,23 @@ class ListCardsFragment: Fragment(),
 
         binding.listCardsGroupBtnMana.apply{
             alpha = 0F
-            visibility = View.VISIBLE
             animate()
                 .alpha(1F)
-                .setStartDelay(500L)
+                .setStartDelay(300L)
                 .setDuration(duracaoLonga)
-                .setListener(null)
+                .setListener(object : AnimatorListenerAdapter(){
+                    override fun onAnimationEnd(animation: Animator?) {
+                        super.onAnimationEnd(animation)
+                        binding.listCardsGroupBtnMana.visibility = View.VISIBLE
+                    }
+                })
         }
     }
     private fun recolherToolbar(){
         binding.listCardsGroupBtnMana.apply{
             animate()
                 .alpha(0F)
-                .setDuration(duracaoCurta)
+                .setDuration(0)
                 .setListener(object : AnimatorListenerAdapter(){
                     override fun onAnimationEnd(animation: Animator?) {
                         super.onAnimationEnd(animation)
@@ -180,7 +189,7 @@ class ListCardsFragment: Fragment(),
         val c = ChangeBounds()
         c.setStartDelay(250L)
         c.setInterpolator(AnticipateOvershootInterpolator())
-        c.setDuration(duracaoMedia)
+        c.setDuration(duracaoLonga)
         TransitionManager.beginDelayedTransition(binding.root as ViewGroup, c)
 
         val p = binding.listCardsToolbar.layoutParams
@@ -195,6 +204,187 @@ class ListCardsFragment: Fragment(),
                 .setListener(null)
         }
     }
+    private fun onButtonManaClicked(mana:String, isResizing:Boolean){
+        val m = mana.toLowerCase()
+        when(m) {
+            "white" -> {
+                if(isResizing){
+                    binding.listCardsBtnWhite.setBackgroundResource(R.drawable.bg_btn_white_selected)
+                    binding.listCardsBtnWhite.setColorFilter(resources.getColor(R.color.white_mana))
+                    return
+                }
+                viewModel.whiteSelected = !viewModel.whiteSelected
+                if (viewModel.whiteSelected) {
+                    binding.listCardsBtnWhite.setBackgroundResource(R.drawable.bg_btn_white_selected)
+                    binding.listCardsBtnWhite.setColorFilter(resources.getColor(R.color.white_mana))
+                    if (viewModel.blueSelected) {
+                        viewModel.blueSelected = false
+                        binding.listCardsBtnBlue.background = null
+                        binding.listCardsBtnBlue.setColorFilter(null)
+                    }
+                    if (viewModel.greenSelected) {
+                        viewModel.greenSelected = false
+                        binding.listCardsBtnGreen.background = null
+                        binding.listCardsBtnGreen.setColorFilter(null)
+                    }
+                    if (viewModel.redSelected) {
+                        viewModel.redSelected = false
+                        binding.listCardsBtnRed.background = null
+                        binding.listCardsBtnRed.setColorFilter(null)
+                    }
+                    if (viewModel.blackSelected) {
+                        viewModel.blackSelected = false
+                        binding.listCardsBtnBlack.background = null
+                        binding.listCardsBtnBlack.setColorFilter(null)
+                    }
+                } else {
+                    binding.listCardsBtnWhite.background = null
+                    binding.listCardsBtnWhite.setColorFilter(null)
+                }
+            }
+            "blue" -> {
+                if(isResizing){
+                    binding.listCardsBtnBlue.setBackgroundResource(R.drawable.bg_btn_blue_selected)
+                    binding.listCardsBtnBlue.setColorFilter(resources.getColor(R.color.blue_mana))
+                    return
+                }
+                viewModel.blueSelected = !viewModel.blueSelected
+                if (viewModel.blueSelected) {
+                    binding.listCardsBtnBlue.setBackgroundResource(R.drawable.bg_btn_blue_selected)
+                    binding.listCardsBtnBlue.setColorFilter(resources.getColor(R.color.blue_mana))
+                    if (viewModel.whiteSelected) {
+                        viewModel.whiteSelected = false
+                        binding.listCardsBtnWhite.background = null
+                        binding.listCardsBtnWhite.setColorFilter(null)
+                    }
+                    if (viewModel.greenSelected) {
+                        viewModel.greenSelected = false
+                        binding.listCardsBtnGreen.background = null
+                        binding.listCardsBtnGreen.setColorFilter(null)
+                    }
+                    if (viewModel.redSelected) {
+                        viewModel.redSelected = false
+                        binding.listCardsBtnRed.background = null
+                        binding.listCardsBtnRed.setColorFilter(null)
+                    }
+                    if (viewModel.blackSelected) {
+                        viewModel.blackSelected = false
+                        binding.listCardsBtnBlack.background = null
+                        binding.listCardsBtnBlack.setColorFilter(null)
+                    }
+                } else {
+                    binding.listCardsBtnBlue.background = null
+                    binding.listCardsBtnBlue.setColorFilter(null)
+                }
+            }
+            "green" -> {
+                if(isResizing){
+                    binding.listCardsBtnGreen.setBackgroundResource(R.drawable.bg_btn_green_selected)
+                    binding.listCardsBtnGreen.setColorFilter(resources.getColor(R.color.green_mana))
+                    return
+                }
+                viewModel.greenSelected = !viewModel.greenSelected
+                if (viewModel.greenSelected) {
+                    binding.listCardsBtnGreen.setBackgroundResource(R.drawable.bg_btn_green_selected)
+                    binding.listCardsBtnGreen.setColorFilter(resources.getColor(R.color.green_mana))
+                    if (viewModel.whiteSelected) {
+                        viewModel.whiteSelected = false
+                        binding.listCardsBtnWhite.background = null
+                        binding.listCardsBtnWhite.setColorFilter(null)
+                    }
+                    if (viewModel.blueSelected) {
+                        viewModel.blueSelected = false
+                        binding.listCardsBtnBlue.background = null
+                        binding.listCardsBtnBlue.setColorFilter(null)
+                    }
+                    if (viewModel.redSelected) {
+                        viewModel.redSelected = false
+                        binding.listCardsBtnRed.background = null
+                        binding.listCardsBtnRed.setColorFilter(null)
+                    }
+                    if (viewModel.blackSelected) {
+                        viewModel.blackSelected = false
+                        binding.listCardsBtnBlack.background = null
+                        binding.listCardsBtnBlack.setColorFilter(null)
+                    }
+                } else {
+                    binding.listCardsBtnGreen.background = null
+                    binding.listCardsBtnGreen.setColorFilter(null)
+                }
+            }
+            "red" -> {
+                if(isResizing){
+                    binding.listCardsBtnRed.setBackgroundResource(R.drawable.bg_btn_red_selected)
+                    binding.listCardsBtnRed.setColorFilter(resources.getColor(R.color.red_mana))
+                    return
+                }
+                viewModel.redSelected = !viewModel.redSelected
+                if (viewModel.redSelected) {
+                    binding.listCardsBtnRed.setBackgroundResource(R.drawable.bg_btn_red_selected)
+                    binding.listCardsBtnRed.setColorFilter(resources.getColor(R.color.red_mana))
+                    if (viewModel.whiteSelected) {
+                        viewModel.whiteSelected = false
+                        binding.listCardsBtnWhite.background = null
+                        binding.listCardsBtnWhite.setColorFilter(null)
+                    }
+                    if (viewModel.blueSelected) {
+                        viewModel.blueSelected = false
+                        binding.listCardsBtnBlue.background = null
+                        binding.listCardsBtnBlue.setColorFilter(null)
+                    }
+                    if (viewModel.greenSelected) {
+                        viewModel.greenSelected = false
+                        binding.listCardsBtnGreen.background = null
+                        binding.listCardsBtnGreen.setColorFilter(null)
+                    }
+                    if (viewModel.blackSelected) {
+                        viewModel.blackSelected = false
+                        binding.listCardsBtnBlack.background = null
+                        binding.listCardsBtnBlack.setColorFilter(null)
+                    }
+                } else {
+                    binding.listCardsBtnRed.background = null
+                    binding.listCardsBtnRed.setColorFilter(null)
+                }
+            }
+            "black" -> {
+                if(isResizing){
+                    binding.listCardsBtnBlack.setBackgroundResource(R.drawable.bg_btn_black_selected)
+                    binding.listCardsBtnBlack.setColorFilter(resources.getColor(R.color.black_mana))
+                    return
+                }
+                viewModel.blackSelected = !viewModel.blackSelected
+                if (viewModel.blackSelected) {
+                    binding.listCardsBtnBlack.setBackgroundResource(R.drawable.bg_btn_black_selected)
+                    binding.listCardsBtnBlack.setColorFilter(resources.getColor(R.color.black_mana))
+                    if (viewModel.whiteSelected) {
+                        viewModel.whiteSelected = false
+                        binding.listCardsBtnWhite.background = null
+                        binding.listCardsBtnWhite.setColorFilter(null)
+                    }
+                    if (viewModel.blueSelected) {
+                        viewModel.blueSelected = false
+                        binding.listCardsBtnBlue.background = null
+                        binding.listCardsBtnBlue.setColorFilter(null)
+                    }
+                    if (viewModel.greenSelected) {
+                        viewModel.greenSelected = false
+                        binding.listCardsBtnGreen.background = null
+                        binding.listCardsBtnGreen.setColorFilter(null)
+                    }
+                    if (viewModel.redSelected) {
+                        viewModel.redSelected = false
+                        binding.listCardsBtnRed.background = null
+                        binding.listCardsBtnRed.setColorFilter(null)
+                    }
+                } else {
+                    binding.listCardsBtnBlack.background = null
+                    binding.listCardsBtnBlack.setColorFilter(null)
+                }
+            }
+            else ->{ return }
+        }
+    }
     override fun onClick(v: View?) {
         if(v != null){
             when(v.id){
@@ -204,161 +394,11 @@ class ListCardsFragment: Fragment(),
                     }
                     viewModel.isExpanded = !viewModel.isExpanded
                 }
-                R.id.list_cards_btn_white -> {
-                    viewModel.whiteSelected = !viewModel.whiteSelected
-                    if(viewModel.whiteSelected){
-                        binding.listCardsBtnWhite.setBackgroundResource(R.drawable.bg_btn_white_selected)
-                        binding.listCardsBtnWhite.setColorFilter(resources.getColor(R.color.white_mana))
-                        if(viewModel.blueSelected){
-                            viewModel.blueSelected = false
-                            binding.listCardsBtnBlue.background = null
-                            binding.listCardsBtnBlue.setColorFilter(null)
-                        }
-                        if(viewModel.greenSelected){
-                            viewModel.greenSelected = false
-                            binding.listCardsBtnGreen.background = null
-                            binding.listCardsBtnGreen.setColorFilter(null)
-                        }
-                        if(viewModel.redSelected){
-                            viewModel.redSelected = false
-                            binding.listCardsBtnRed.background = null
-                            binding.listCardsBtnRed.setColorFilter(null)
-                        }
-                        if(viewModel.blackSelected){
-                            viewModel.blackSelected = false
-                            binding.listCardsBtnBlack.background = null
-                            binding.listCardsBtnBlack.setColorFilter(null)
-                        }
-                    }
-                    else{
-                        binding.listCardsBtnWhite.background = null
-                        binding.listCardsBtnWhite.setColorFilter(null)
-                    }
-                }
-                R.id.list_cards_btn_blue -> {
-                    viewModel.blueSelected = !viewModel.blueSelected
-                    if(viewModel.blueSelected){
-                        binding.listCardsBtnBlue.setBackgroundResource(R.drawable.bg_btn_blue_selected)
-                        binding.listCardsBtnBlue.setColorFilter(resources.getColor(R.color.blue_mana))
-                        if(viewModel.whiteSelected){
-                            viewModel.whiteSelected = false
-                            binding.listCardsBtnWhite.background = null
-                            binding.listCardsBtnWhite.setColorFilter(null)
-                        }
-                        if(viewModel.greenSelected){
-                            viewModel.greenSelected = false
-                            binding.listCardsBtnGreen.background = null
-                            binding.listCardsBtnGreen.setColorFilter(null)
-                        }
-                        if(viewModel.redSelected){
-                            viewModel.redSelected = false
-                            binding.listCardsBtnRed.background = null
-                            binding.listCardsBtnRed.setColorFilter(null)
-                        }
-                        if(viewModel.blackSelected){
-                            viewModel.blackSelected = false
-                            binding.listCardsBtnBlack.background = null
-                            binding.listCardsBtnBlack.setColorFilter(null)
-                        }
-                    }
-                    else{
-                        binding.listCardsBtnBlue.background = null
-                        binding.listCardsBtnBlue.setColorFilter(null)
-                    }
-                }
-                R.id.list_cards_btn_green -> {
-                    viewModel.greenSelected = !viewModel.greenSelected
-                    if(viewModel.greenSelected){
-                        binding.listCardsBtnGreen.setBackgroundResource(R.drawable.bg_btn_green_selected)
-                        binding.listCardsBtnGreen.setColorFilter(resources.getColor(R.color.green_mana))
-                        if(viewModel.whiteSelected){
-                            viewModel.whiteSelected = false
-                            binding.listCardsBtnWhite.background = null
-                            binding.listCardsBtnWhite.setColorFilter(null)
-                        }
-                        if(viewModel.blueSelected){
-                            viewModel.blueSelected = false
-                            binding.listCardsBtnBlue.background = null
-                            binding.listCardsBtnBlue.setColorFilter(null)
-                        }
-                        if(viewModel.redSelected){
-                            viewModel.redSelected = false
-                            binding.listCardsBtnRed.background = null
-                            binding.listCardsBtnRed.setColorFilter(null)
-                        }
-                        if(viewModel.blackSelected){
-                            viewModel.blackSelected = false
-                            binding.listCardsBtnBlack.background = null
-                            binding.listCardsBtnBlack.setColorFilter(null)
-                        }
-                    }
-                    else{
-                        binding.listCardsBtnGreen.background = null
-                        binding.listCardsBtnGreen.setColorFilter(null)
-                    }
-                }
-                R.id.list_cards_btn_red -> {
-                    viewModel.redSelected = !viewModel.redSelected
-                    if(viewModel.redSelected){
-                        binding.listCardsBtnRed.setBackgroundResource(R.drawable.bg_btn_red_selected)
-                        binding.listCardsBtnRed.setColorFilter(resources.getColor(R.color.red_mana))
-                        if(viewModel.whiteSelected){
-                            viewModel.whiteSelected = false
-                            binding.listCardsBtnWhite.background = null
-                            binding.listCardsBtnWhite.setColorFilter(null)
-                        }
-                        if(viewModel.blueSelected){
-                            viewModel.blueSelected = false
-                            binding.listCardsBtnBlue.background = null
-                            binding.listCardsBtnBlue.setColorFilter(null)
-                        }
-                        if(viewModel.greenSelected){
-                            viewModel.greenSelected = false
-                            binding.listCardsBtnGreen.background = null
-                            binding.listCardsBtnGreen.setColorFilter(null)
-                        }
-                        if(viewModel.blackSelected){
-                            viewModel.blackSelected = false
-                            binding.listCardsBtnBlack.background = null
-                            binding.listCardsBtnBlack.setColorFilter(null)
-                        }
-                    }
-                    else{
-                        binding.listCardsBtnRed.background = null
-                        binding.listCardsBtnRed.setColorFilter(null)
-                    }
-                }
-                R.id.list_cards_btn_black -> {
-                    viewModel.blackSelected = !viewModel.blackSelected
-                    if(viewModel.blackSelected){
-                        binding.listCardsBtnBlack.setBackgroundResource(R.drawable.bg_btn_black_selected)
-                        binding.listCardsBtnBlack.setColorFilter(resources.getColor(R.color.black_mana))
-                        if(viewModel.whiteSelected){
-                            viewModel.whiteSelected = false
-                            binding.listCardsBtnWhite.background = null
-                            binding.listCardsBtnWhite.setColorFilter(null)
-                        }
-                        if(viewModel.blueSelected){
-                            viewModel.blueSelected = false
-                            binding.listCardsBtnBlue.background = null
-                            binding.listCardsBtnBlue.setColorFilter(null)
-                        }
-                        if(viewModel.greenSelected){
-                            viewModel.greenSelected = false
-                            binding.listCardsBtnGreen.background = null
-                            binding.listCardsBtnGreen.setColorFilter(null)
-                        }
-                        if(viewModel.redSelected){
-                            viewModel.redSelected = false
-                            binding.listCardsBtnRed.background = null
-                            binding.listCardsBtnRed.setColorFilter(null)
-                        }
-                    }
-                    else{
-                        binding.listCardsBtnBlack.background = null
-                        binding.listCardsBtnBlack.setColorFilter(null)
-                    }
-                }
+                R.id.list_cards_btn_white -> { onButtonManaClicked("white", false) }
+                R.id.list_cards_btn_blue -> { onButtonManaClicked("blue", false) }
+                R.id.list_cards_btn_green -> { onButtonManaClicked("green", false) }
+                R.id.list_cards_btn_red -> { onButtonManaClicked("red", false) }
+                R.id.list_cards_btn_black -> { onButtonManaClicked("black", false) }
             }
         }
     }
@@ -384,17 +424,20 @@ class ListCardsFragment: Fragment(),
     override fun onEditorAction(v: TextView?, actionId: Int, keyEvent: KeyEvent?): Boolean {
         return when(actionId) {
             EditorInfo.IME_ACTION_SEARCH -> {
-                Toast.makeText(activity, "SEARCH",Toast.LENGTH_SHORT).show()
+                //v?.apply{ fecharTeclado(this) }
+                Thread.sleep(150)
                 onSearch()
                 true
             }
             EditorInfo.IME_ACTION_GO ->{
-                Toast.makeText(activity, "GO",Toast.LENGTH_SHORT).show()
+                //v?.apply{ fecharTeclado(this) }
+                Thread.sleep(150)
                 onSearch()
                 true
             }
             EditorInfo.IME_ACTION_DONE ->{
-                Toast.makeText(activity, "DONE",Toast.LENGTH_SHORT).show()
+                //v?.apply{ fecharTeclado(this) }
+                Thread.sleep(150)
                 onSearch()
                 true
             }

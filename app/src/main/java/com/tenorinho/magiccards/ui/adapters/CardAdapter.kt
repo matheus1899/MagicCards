@@ -35,13 +35,13 @@ class CardAdapter(val fragment: ListCardsFragment) :
     private class CardViewHolder:RecyclerView.ViewHolder{
         val imgCard:ImageView
         val txtName:TextView
-        val txtTypeline:TextView
+        //val txtTypeline:TextView
         val root : View
         constructor(v: View):super(v){
             root = v
             imgCard = v.findViewById(R.id.item_card_img)
             txtName = v.findViewById(R.id.item_card_txt_name)
-            txtTypeline = v.findViewById(R.id.item_card_txt_type_line)
+            //txtTypeline = v.findViewById(R.id.item_card_txt_type_line)
         }
         fun bind(card:Card?, position: Int, function:(Int)->Unit){
             root.setOnClickListener { function(position) }
@@ -71,13 +71,13 @@ class CardAdapter(val fragment: ListCardsFragment) :
                         imgCard.setBackgroundColor(imgCard.context.resources.getColor(R.color.lightGray))
                     }
                 }
-                txtName.text = card.name ?: "UNKNOWN"
-                txtTypeline.text = card.type_line ?: "UNKNOWN"
+                txtName.text = card.name.replace("//", "\n") ?: "UNKNOWN"
+                //txtTypeline.text = card.type_line ?: "UNKNOWN"
             }
             else{
                 imgCard.setImageResource(R.drawable.ic_no_card_image)
                 txtName.text = "UNKNOWN"
-                txtTypeline.text = "UNKNOWN"
+                //txtTypeline.text = "UNKNOWN"
             }
         }
     }

@@ -21,7 +21,7 @@ class CardRepository(private val cardDAO: CardDAO,
                      private val imageURIsDAO: ImageURIsDAO) {
     private val service = RetrofitConfig.getRetrofitScryfallService().create(IScryfallService::class.java)
 
-    fun search(searchText: String, success: (ArrayList<Card>?) -> Unit, failure: (Throwable) -> Unit) {
+    fun search(searchText: String, initialSearchText:String, success: (ArrayList<Card>?) -> Unit, failure: (Throwable) -> Unit) {
         val listCards = ArrayList<Card>()
         val callback = service.getCardsByText(searchText)
         callback.enqueue(object : Callback<NetworkListCards> {
@@ -43,7 +43,7 @@ class CardRepository(private val cardDAO: CardDAO,
                         }
                     }
                     else if (response.code() == 404) {
-                        failure(Throwable("0 cards found with \"${searchText}\""))
+                        failure(Throwable("0 cards found with \"${initialSearchText}\""))
                     }
                 }
                 catch (e: Exception) {

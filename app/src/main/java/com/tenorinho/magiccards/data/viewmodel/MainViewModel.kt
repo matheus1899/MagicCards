@@ -54,10 +54,16 @@ class MainViewModel(private val repository: CardRepository) : ViewModel() {
     }
     fun search(){
         progressBarVisibility.value = true
-        val s = searchText.value
-        if(!s.isNullOrBlank()){
+        var txt = searchText.value
+        val txtInitial = txt
+        if(!txt.isNullOrBlank()){
+            if(whiteSelected){ txt+=" mana:{W}" }
+            else if(blueSelected){ txt+=" mana:{U}" }
+            else if(greenSelected){ txt+=" mana:{G}" }
+            else if(redSelected){ txt+=" mana:{R}" }
+            else if(blackSelected){ txt+=" mana:{B}" }
             viewModelScope.launch{
-                repository.search(s, ::onSearchResult, ::onFailure)
+                repository.search(txt, txtInitial!!, ::onSearchResult, ::onFailure)
             }
         }
     }
@@ -68,7 +74,7 @@ class MainViewModel(private val repository: CardRepository) : ViewModel() {
         progressBarVisibility.value = false
     }
     fun onFailure(t:Throwable){
-        error.value = t
+        bindError(t)
         progressBarVisibility.value = false
     }
     fun setSelectedCard(position:Int?){
@@ -121,7 +127,7 @@ class MainViewModel(private val repository: CardRepository) : ViewModel() {
         buttonsIsEnabled.value = true
     }
     private fun bindFailureOnSaveCard(t: Throwable){
-        error.value = t
+        bindError(t)
         buttonsIsEnabled.value = true
     }
     private fun bindCard(card:Card?){
@@ -194,6 +200,7 @@ class MainViewModel(private val repository: CardRepository) : ViewModel() {
     }
     private fun bindError(t:Throwable){
         this.error.value = t
+        this.error.value = Throwable("")
     }
     private fun bindCardId(id:Long?){
         cardID = id

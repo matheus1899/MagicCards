@@ -76,6 +76,11 @@ class ShowCardFragment : Fragment(), View.OnClickListener{
             }
         }
     }
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.isCardChanged = false
+        viewModel.selectedCard.value = null
+    }
     private fun getViewModel() {
         val app = requireActivity().application as App
         val factory = MainViewModelFactory(app.cardRepository)
@@ -108,7 +113,10 @@ class ShowCardFragment : Fragment(), View.OnClickListener{
         }
     }
     private fun showLongToast(message:String?){
-        Toast.makeText(activity, message ?: "NO MESSAGE", Toast.LENGTH_LONG).show()
+        if(message.isNullOrEmpty()){
+            return
+        }
+        Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
     }
     override fun onClick(v: View?) {
         if(v != null){
