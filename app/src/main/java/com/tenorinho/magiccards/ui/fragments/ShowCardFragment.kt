@@ -14,19 +14,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.tenorinho.magiccards.App
 import com.tenorinho.magiccards.R
 import com.tenorinho.magiccards.data.models.domain.CardLayout
 import com.tenorinho.magiccards.data.viewmodel.MainViewModel
-import com.tenorinho.magiccards.data.viewmodel.MainViewModelFactory
 import com.tenorinho.magiccards.databinding.FragmentShowCardBinding
 
 class ShowCardFragment : Fragment(), View.OnClickListener{
     private lateinit var binding:FragmentShowCardBinding
-    private lateinit var viewModel: MainViewModel
+    lateinit var viewModel: MainViewModel
 
     companion object{
         fun newInstance():ShowCardFragment{
@@ -38,16 +36,16 @@ class ShowCardFragment : Fragment(), View.OnClickListener{
         (activity as AppCompatActivity).setSupportActionBar(binding.showCardToolbar)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setTitle(R.string.activity_main_title)
-        getViewModel()
-        binding.viewModel = viewModel
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity().application as App).appContainer.inject(this, requireActivity() as AppCompatActivity)
         val args = arguments
         if(args != null && args.containsKey("card_position")){
             viewModel.setSelectedCard(args.getInt("card_position"))
         }
+        binding.viewModel = viewModel
         binding.showCardBtnLoad.setOnClickListener(this)
         binding.showCardBtnRotate.setOnClickListener(this)
         binding.showCardBtnSave.setOnClickListener(this)
@@ -80,11 +78,6 @@ class ShowCardFragment : Fragment(), View.OnClickListener{
         super.onDestroy()
         viewModel.isCardChanged = false
         viewModel.selectedCard.value = null
-    }
-    private fun getViewModel() {
-        val app = requireActivity().application as App
-        val factory = MainViewModelFactory(app.cardRepository)
-        viewModel = ViewModelProvider(requireActivity(), factory).get(MainViewModel::class.java)
     }
     private fun setButtonsIsEnabled(vararg btn:View, it: Boolean) {
         for(i in btn){

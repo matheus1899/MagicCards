@@ -12,11 +12,6 @@ class MainViewModel(private val repository: CardRepository) : ViewModel() {
     val listCards = MutableLiveData<ArrayList<Card>>()
     val searchText = MutableLiveData<String>()
     val progressBarVisibility = MutableLiveData<Boolean>()
-    val btnWManaSelected = MutableLiveData<Boolean>()
-    val btnUManaSelected = MutableLiveData<Boolean>()
-    val btnGManaSelected = MutableLiveData<Boolean>()
-    val btnRManaSelected = MutableLiveData<Boolean>()
-    val btnBManaSelected = MutableLiveData<Boolean>()
     var whiteSelected : Boolean = false
     var blueSelected : Boolean = false
     var greenSelected : Boolean = false
@@ -37,11 +32,6 @@ class MainViewModel(private val repository: CardRepository) : ViewModel() {
     private var cardID:Long?
 
     init{
-        btnWManaSelected.value = false
-        btnUManaSelected.value = false
-        btnGManaSelected.value = false
-        btnRManaSelected.value = false
-        btnBManaSelected.value = false
         progressBarVisibility.value = false
         searchText.value = ""
         //ShowCard

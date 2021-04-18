@@ -14,17 +14,15 @@ import android.view.animation.AnticipateOvershootInterpolator
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.tenorinho.magiccards.*
 import com.tenorinho.magiccards.data.viewmodel.MainViewModel
-import com.tenorinho.magiccards.data.viewmodel.MainViewModelFactory
 import com.tenorinho.magiccards.databinding.FragmentListCardsBinding
 import com.tenorinho.magiccards.ui.adapters.CardAdapter
 
@@ -35,10 +33,10 @@ class ListCardsFragment: Fragment(),
     private var duracaoCurta:Long = 0L
     private var duracaoMedia:Long = 0L
     private var duracaoLonga:Long = 0L
+    lateinit var viewModel: MainViewModel
     private lateinit var binding:FragmentListCardsBinding
     private lateinit var adapter: CardAdapter
     private lateinit var imm: InputMethodManager
-    private lateinit var viewModel: MainViewModel
     private lateinit var navController:NavController
 
     companion object{
@@ -56,8 +54,13 @@ class ListCardsFragment: Fragment(),
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_cards, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (requireActivity().application as App).appContainer.inject(this, requireActivity() as AppCompatActivity)
         navController = findNavController()
-        getViewModel()
         binding.viewModel = viewModel
         binding.listCardsRecyclerView.adapter = adapter
         setBehaviors()
@@ -66,16 +69,10 @@ class ListCardsFragment: Fragment(),
             adapter.updateList(it)
             viewModel.progressBarVisibility.value = false
         })
-        return binding.root
     }
     fun onItemClick(position:Int){
         val action = ListCardsFragmentDirections.actionListCardsFragmentToShowCardFragment(position)
         navController.navigate(action)
-    }
-    private fun getViewModel(){
-        val app = activity?.application as App
-        val factory = MainViewModelFactory(app.cardRepository)
-        viewModel = ViewModelProvider(requireActivity(), factory).get(MainViewModel::class.java)
     }
     private fun showLongToast(message:String?){
         if(message.isNullOrEmpty()){
