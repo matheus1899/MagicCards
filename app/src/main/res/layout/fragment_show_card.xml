@@ -38,8 +38,7 @@
                 android:src="@drawable/ic_no_card_image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/show_card_toolbar"
-                tools:src="@drawable/magic_card_transform_1" />
+                app:layout_constraintTop_toBottomOf="@id/show_card_toolbar" />
             <ImageView
                 android:id="@+id/show_card_img_2"
                 android:layout_width="210dp"
@@ -49,8 +48,7 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/show_card_toolbar"
-                tools:src="@drawable/magic_card_transform_2" />
+                app:layout_constraintTop_toBottomOf="@id/show_card_toolbar" />
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/show_card_barrier_imgs_1"
                 android:layout_width="wrap_content"

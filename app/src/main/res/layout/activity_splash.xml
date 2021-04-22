@@ -50,7 +50,7 @@
         app:layout_constraintBottom_toTopOf="@+id/splash_guideline_h_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_white_mana"
+        app:srcCompat="@drawable/ic_white_mana_no_bg"
         app:tint="@color/white_mana_splash" />
 
     <ImageView
@@ -61,7 +61,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toEndOf="@+id/splash_img_white"
         app:layout_constraintTop_toTopOf="@+id/splash_guideline_h_2"
-        app:srcCompat="@drawable/ic_blue_mana"
+        app:srcCompat="@drawable/ic_blue_mana_no_bg"
         app:tint="@color/blue_mana_splash"/>
 
     <ImageView
@@ -72,7 +72,7 @@
         app:layout_constraintEnd_toStartOf="@+id/splash_img_blue"
         app:layout_constraintStart_toEndOf="@id/splash_img_red"
         app:layout_constraintTop_toBottomOf="@+id/splash_img_blue"
-        app:srcCompat="@drawable/ic_black_mana"
+        app:srcCompat="@drawable/ic_black_mana_no_bg"
         app:tint="@color/black_mana_splash" />
 
     <ImageView
@@ -83,7 +83,7 @@
         app:layout_constraintEnd_toStartOf="@+id/splash_img_black"
         app:layout_constraintStart_toEndOf="@+id/splash_img_green"
         app:layout_constraintTop_toTopOf="@+id/splash_img_black"
-        app:srcCompat="@drawable/ic_red_mana"
+        app:srcCompat="@drawable/ic_red_mana_no_bg"
         app:tint="@color/red_mana_splash" />
 
     <ImageView
@@ -94,6 +94,6 @@
         android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toStartOf="@+id/splash_img_white"
         app:layout_constraintTop_toTopOf="@+id/splash_guideline_h_2"
-        app:srcCompat="@drawable/ic_green_mana"
+        app:srcCompat="@drawable/ic_green_mana_no_bg"
         app:tint="@color/green_mana_splash"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
