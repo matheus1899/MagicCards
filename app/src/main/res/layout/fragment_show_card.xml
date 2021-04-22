@@ -116,51 +116,83 @@
                 android:text="@{viewModel.textName}"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/show_card_txt_typeline"
                 app:layout_constraintEnd_toStartOf="@id/show_card_linear"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/show_card_barrier_imgs_1"
                 tools:text="Afflicted Deserter" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="#555"
+                android:layout_marginHorizontal="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/show_card_txt_name"
+                app:layout_constraintBottom_toTopOf="@id/show_card_txt_typeline"/>
+
             <TextView
                 android:id="@+id/show_card_txt_typeline"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="serif"
                 android:maxLines="2"
                 android:text="@{viewModel.textTypeLine}"
-                app:layout_constraintBottom_toTopOf="@id/show_card_txt_oracle"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/show_card_txt_power_toughness"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/show_card_txt_name"
                 tools:text="Creature - Human Werewolf" />
-            <TextView
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="#555"
+                android:layout_marginHorizontal="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/show_card_txt_typeline"
+                app:layout_constraintBottom_toTopOf="@id/show_card_txt_oracle"/>
+
+            <com.tenorinho.magiccards.ui.custom.ManaIconTextView
                 android:id="@+id/show_card_txt_oracle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="serif"
-                android:text="@{viewModel.textOracle}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/show_card_txt_typeline"
+                app:layout_constraintTop_toBottomOf="@id/show_card_barrier_pt_typeline_bottom"
                 tools:text="At the beginning of each upkeep, if no spells were cast last turn, transform Afflicted Deserter.\n\nThe rising of the first full moon eliminated any doubt as to the horrible truth lurking within." />
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/show_card_barrier_pt_typeline_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="top"
+                app:constraint_referenced_ids="show_card_txt_typeline, show_card_txt_power_toughness" />
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/show_card_barrier_pt_typeline_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="show_card_txt_typeline, show_card_txt_power_toughness" />
             <TextView
                 android:id="@+id/show_card_txt_power_toughness"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginVertical="2dp"
                 android:fontFamily="serif"
                 android:text="@{viewModel.textPowerToughness}"
                 android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/show_card_txt_typeline"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/show_card_txt_oracle"
+                app:layout_constraintStart_toEndOf="@id/show_card_txt_typeline"
+                app:layout_constraintTop_toTopOf="@+id/show_card_txt_typeline"
                 tools:text="3/2" />
+
             <LinearLayout
                 android:id="@+id/show_card_linear"
                 android:layout_width="wrap_content"
