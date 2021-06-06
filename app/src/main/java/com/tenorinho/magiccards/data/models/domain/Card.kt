@@ -31,6 +31,31 @@ data class Card(
     val image_uris: ImageURIs?,
     val rarity:String,
     val textless:Boolean,
+    //
+    val standard:String?,
+    val future:String?,
+    val historic:String?,
+    val gladiator:String?,
+    val pioneer:String?,
+    val modern:String?,
+    val legacy:String?,
+    val pauper:String?,
+    val vintage:String?,
+    val penny:String?,
+    val commander:String?,
+    val brawl:String?,
+    val duel:String?,
+    val oldschool:String?,
+    val premodern:String?,
+    //
+    val set:String,
+    val setName:String,
+    val setType:String,
+    val digital:Boolean,
+    val mtgoId:Int = 0,
+    val arenaId:Int = 0,
+    val tcgplayerId:Int = 0,
+    val games:Array<String>?
 )
 enum class CardLayout(val layout:String) {
     NORMAL("normal"),

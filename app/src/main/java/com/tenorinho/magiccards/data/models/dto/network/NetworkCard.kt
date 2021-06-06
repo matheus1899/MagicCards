@@ -63,6 +63,24 @@ data class NetworkCard(
     val rarity:String,
     @SerializedName("textless")
     val textless:Boolean,
+    @SerializedName("legalities")
+    val legalities:NetworkLegalities?,
+    @SerializedName("set")
+    val set:String,
+    @SerializedName("set_name")
+    val setName:String,
+    @SerializedName("set_type")
+    val setType:String,
+    @SerializedName("digital")
+    val digital:Boolean,
+    @SerializedName("mtgo_id")
+    val mtgoId:Int?,
+    @SerializedName("arena_id")
+    val arenaId:Int?,
+    @SerializedName("tcgplayer_id")
+    val tcgplayerId:Int?,
+    @SerializedName("games")
+    val games:Array<String>?
 ){
     private fun isTwoFaced(layout:String):Boolean{
         return layout == CardLayout.MODAL_DFC.layout ||
@@ -90,7 +108,11 @@ data class NetworkCard(
                 keywords, CardLayout.getCardLayoutByString(layout), mana_cost ?: "", name,
                 oracle_text?: "", power ?: "", produced_mana, toughness ?: "",
                 type_line, artist ?: "", border_color, highres_image, image_status,
-                image_uris?.toImageURIs(uuid), rarity, textless
+                image_uris?.toImageURIs(uuid), rarity, textless, legalities?.standard,legalities?.future,
+                legalities?.historic, legalities?.gladiator, legalities?.pioneer, legalities?.modern,
+                legalities?.legacy, legalities?.pauper, legalities?.vintage, legalities?.penny, legalities?.commander,
+                legalities?.brawl, legalities?.duel, legalities?.oldschool, legalities?.premodern, set, setName, setType,
+                digital, mtgoId ?: 0, arenaId ?: 0, tcgplayerId ?: 0, games
             )
         }
         else if(isFlip(layout)) {
@@ -108,7 +130,11 @@ data class NetworkCard(
                 keywords, CardLayout.getCardLayoutByString(layout), mana_cost ?: "", name,
                 oracle_text?: "", power ?: "", produced_mana, toughness ?: "",
                 type_line, artist ?: "", border_color, highres_image, image_status,
-                image_uris?.toImageURIs(uuid), rarity, textless
+                image_uris?.toImageURIs(uuid), rarity, textless, legalities?.standard,legalities?.future,
+                legalities?.historic, legalities?.gladiator, legalities?.pioneer, legalities?.modern,
+                legalities?.legacy, legalities?.pauper, legalities?.vintage, legalities?.penny, legalities?.commander,
+                legalities?.brawl, legalities?.duel, legalities?.oldschool, legalities?.premodern, set, setName, setType,
+                digital, mtgoId ?: 0, arenaId ?: 0, tcgplayerId ?: 0, games
             )
         }
         else{
@@ -122,7 +148,11 @@ data class NetworkCard(
                 keywords, CardLayout.getCardLayoutByString(layout), mana_cost ?: "", name,
                 oracle_text?: "", power ?: "", produced_mana, toughness ?: "",
                 type_line, artist ?: "", border_color, highres_image, image_status,
-                image_uris?.toImageURIs(uuid), rarity, textless
+                image_uris?.toImageURIs(uuid), rarity, textless, legalities?.standard,legalities?.future,
+                legalities?.historic, legalities?.gladiator, legalities?.pioneer, legalities?.modern,
+                legalities?.legacy, legalities?.pauper, legalities?.vintage, legalities?.penny, legalities?.commander,
+                legalities?.brawl, legalities?.duel, legalities?.oldschool, legalities?.premodern, set, setName, setType,
+                digital, mtgoId ?: 0, arenaId ?: 0, tcgplayerId ?: 0, games
             )
         }
         return card
