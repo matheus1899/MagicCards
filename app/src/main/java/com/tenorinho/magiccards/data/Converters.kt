@@ -3,7 +3,7 @@ package com.tenorinho.magiccards.data
 import androidx.room.TypeConverter
 
 class Converters{
-    @TypeConverter fun stringToArray(s:String?):Array<String>{
+    @TypeConverter fun stringToStringArray(s:String?):Array<String>{
         if(s.isNullOrEmpty()){
             return arrayOf("")
         }

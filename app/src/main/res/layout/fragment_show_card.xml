@@ -110,25 +110,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="4dp"
                 android:fontFamily="serif"
                 android:maxLines="2"
                 android:text="@{viewModel.textName}"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@id/show_card_linear"
+                app:layout_constraintEnd_toStartOf="@id/show_card_mana_cost"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/show_card_barrier_imgs_1"
                 tools:text="Afflicted Deserter" />
+
             <View
+                android:id="@+id/view"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:background="#555"
                 android:layout_marginHorizontal="16dp"
-                app:layout_constraintStart_toStartOf="parent"
+                android:background="#555"
+                app:layout_constraintBottom_toTopOf="@id/show_card_txt_typeline"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/show_card_txt_name"
-                app:layout_constraintBottom_toTopOf="@id/show_card_txt_typeline"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/show_card_txt_name" />
 
             <TextView
                 android:id="@+id/show_card_txt_typeline"
@@ -160,6 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
                 android:fontFamily="serif"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -192,72 +195,21 @@
                 app:layout_constraintStart_toEndOf="@id/show_card_txt_typeline"
                 app:layout_constraintTop_toTopOf="@+id/show_card_txt_typeline"
                 tools:text="3/2" />
-
-            <LinearLayout
-                android:id="@+id/show_card_linear"
+            <com.tenorinho.magiccards.ui.custom.ManaIconTextView
+                android:id="@+id/show_card_mana_cost"
                 android:layout_width="wrap_content"
-                android:layout_height="28dp"
+                android:layout_height="0dp"
                 android:layout_marginEnd="20dp"
-                android:orientation="horizontal"
+                android:textSize="16dp"
+                android:gravity="center"
+                android:maxLines="2"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="@+id/show_card_txt_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/show_card_txt_name"
-                app:layout_constraintTop_toTopOf="@id/show_card_txt_name">
-                <ImageView
-                    android:id="@+id/show_card_img_mana_big"
-                    android:layout_width="wrap_content"
-                    android:layout_height="24dp"
-                    android:visibility="gone" />
-                <ImageView
-                    android:id="@+id/show_card_img_mana_1"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:visibility="gone" />
-                <ImageView
-                    android:id="@+id/show_card_img_mana_2"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:visibility="gone" />
-                <ImageView
-                    android:id="@+id/show_card_img_mana_3"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:visibility="gone" />
-                <ImageView
-                    android:id="@+id/show_card_img_mana_4"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:visibility="gone" />
-                <ImageView
-                    android:id="@+id/show_card_img_mana_5"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:visibility="gone" />
-                <ImageView
-                    android:id="@+id/show_card_img_mana_6"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:visibility="gone" />
-                <ImageView
-                    android:id="@+id/show_card_img_mana_7"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:visibility="gone" />
-                <ImageView
-                    android:id="@+id/show_card_img_mana_8"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:visibility="gone" />
-                <ImageView
-                    android:id="@+id/show_card_img_mana_9"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:visibility="gone" />
-                <ImageView
-                    android:id="@+id/show_card_img_mana_10"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:visibility="gone" />
-            </LinearLayout>
+                app:layout_constraintTop_toTopOf="@id/show_card_txt_name"
+                tools:text="{2}{W}{U}" />
+
             <ProgressBar
                 android:id="@+id/show_card_progress_bar"
                 style="?android:attr/progressBarStyle"

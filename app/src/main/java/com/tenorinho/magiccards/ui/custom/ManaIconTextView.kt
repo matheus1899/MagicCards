@@ -15,15 +15,15 @@ class ManaIconTextView : AppCompatTextView {
     constructor(context:Context, attrs:AttributeSet, defStyleAttr:Int):super(context, attrs, defStyleAttr)
 
     fun setTextAndAddIcons(text:String){
-        val span = SpannableString(text)
+        val span = getSpannableString(text)
         val regex = Regex("([{][A-Z0-9½∞]+[{/}]?[A-Z]?)[}]")
         regex.findAll(text, 0).iterator().forEach {
             val match = it.value.replace('{',' ').replace('}',' ').trim()
-            addSpan(match, it, span)
+            addImageSpan(match, it, span)
         }
         this.text = span
     }
-    private fun addSpan(match:String, it:MatchResult, span: SpannableString){
+    private fun addImageSpan(match:String, it:MatchResult, span: SpannableString){
         when(match){
             "W" -> {
                 val d = ResourcesCompat.getDrawable(resources, R.drawable.ic_white_mana, null)
@@ -297,7 +297,7 @@ class ManaIconTextView : AppCompatTextView {
             }
             "P" -> {
                 val d = ResourcesCompat.getDrawable(resources,R.drawable.ic_one_colored_mana_or_two_life, null)
-                d!!.setBounds(0, 0, this.lineHeight, this.lineHeight)
+                d!!.setBounds(0, 0, this.lineHeight, (this.lineHeight*1.5).toInt())
                 span.setSpan(ImageSpan(d!!), it.range.start, it.range.last+1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
             }
             "W/P" -> {
@@ -327,12 +327,12 @@ class ManaIconTextView : AppCompatTextView {
             }
             "HW" -> {
                 val d = ResourcesCompat.getDrawable(resources,R.drawable.ic_one_half_white_mana, null)
-                d!!.setBounds(0, 0, this.lineHeight, this.lineHeight)
+                d!!.setBounds(0, 0, (this.lineHeight/2).toInt(), this.lineHeight)
                 span.setSpan(ImageSpan(d!!), it.range.start, it.range.last+1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
             }
             "HR" -> {
                 val d = ResourcesCompat.getDrawable(resources, R.drawable.ic_one_half_red_mana, null)
-                d!!.setBounds(0, 0, this.lineHeight, this.lineHeight)
+                d!!.setBounds(0, 0, (this.lineHeight/2).toInt(), this.lineHeight)
                 span.setSpan(ImageSpan(d!!), it.range.start, it.range.last+1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
             }
             "C" -> {
@@ -345,6 +345,30 @@ class ManaIconTextView : AppCompatTextView {
                 d!!.setBounds(0, 0, this.lineHeight, this.lineHeight)
                 span.setSpan(ImageSpan(d!!), it.range.start, it.range.last+1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
             }
+        }
+    }
+    private fun getSpannableString(texto:String):SpannableString{
+        if(texto.length > 24){
+            val r = Regex("[}]")
+            var i = 0
+            var t1 = ""
+            r.findAll(texto, 0).iterator().forEach {
+                if(i == 7){
+                    t1 = texto.subSequence(0,it.range.last).toString()
+                    t1 += "\n"
+                    t1 += texto.subSequence(it.range.last+1, texto.length)
+                }
+                i++
+            }
+            if(t1.isNotEmpty()){
+                return SpannableString(t1)
+            }
+            else{
+                return SpannableString(texto)
+            }
+        }
+        else{
+            return SpannableString(texto)
         }
     }
 }

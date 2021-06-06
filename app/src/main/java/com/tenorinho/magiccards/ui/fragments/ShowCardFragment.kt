@@ -50,6 +50,7 @@ class ShowCardFragment : Fragment(), View.OnClickListener{
         binding.showCardBtnRotate.setOnClickListener(this)
         binding.showCardBtnSave.setOnClickListener(this)
         viewModel.error.observe(viewLifecycleOwner, Observer{showLongToast(it.message)})
+        viewModel.manaCost.observe(viewLifecycleOwner, Observer{ binding.showCardManaCost.setTextAndAddIcons(it) })
         viewModel.textName.observe(viewLifecycleOwner, Observer{binding.showCardTxtName.text = it})
         viewModel.textOracle.observe(viewLifecycleOwner, Observer{binding.showCardTxtOracle.setTextAndAddIcons(it)})
         viewModel.textTypeLine.observe(viewLifecycleOwner, Observer{binding.showCardTxtTypeline.text = it})

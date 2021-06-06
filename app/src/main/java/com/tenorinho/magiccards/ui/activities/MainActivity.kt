@@ -4,10 +4,6 @@ import android.os.Bundle
 import com.tenorinho.magiccards.R
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 
 class MainActivity:AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {

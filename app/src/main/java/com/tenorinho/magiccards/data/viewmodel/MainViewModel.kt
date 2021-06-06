@@ -28,6 +28,7 @@ class MainViewModel(private val repository: CardRepository) : ViewModel() {
     val buttonsIsEnabled = MutableLiveData<Boolean>()
     val uriImg1 = MutableLiveData<String>()
     val uriImg2 = MutableLiveData<String>()
+    val manaCost = MutableLiveData<String>()
     var isCardChanged:Boolean
     private var cardID:Long?
 
@@ -40,6 +41,7 @@ class MainViewModel(private val repository: CardRepository) : ViewModel() {
         buttonsIsEnabled.value = true
         cardRotation.value = 0F
         isCardChanged = false
+        manaCost.value = ""
 
     }
     fun search(){
@@ -134,9 +136,10 @@ class MainViewModel(private val repository: CardRepository) : ViewModel() {
                 textName.value = cF1?.name ?: ""
                 textTypeLine.value =  cF1?.type_line ?: ""
                 textOracle.value =  cF1?.oracle_text ?: ""
-                var pt =  cF1?.power ?: ""
-                pt += "/"
-                pt +=  cF1?.toughness ?: ""
+                manaCost.value = card.mana_cost ?: ""
+                var pt =  cF1?.power?.replace(".5","½") ?: ""
+                pt += "|"
+                pt +=  cF1?.toughness?.replace(".5","½") ?: ""
                 textPowerToughness.value = if(!pt.isNullOrBlank() && pt.length > 2) pt else ""
             }
             else if(card.layout == CardLayout.TRANSFORM ||
@@ -144,25 +147,27 @@ class MainViewModel(private val repository: CardRepository) : ViewModel() {
                 card.layout == CardLayout.MODAL_DFC){
                 isTwoFacedOrFlip.value = true
                 cardRotation.value = 0F
+                manaCost.value = card.mana_cost ?: ""
                 uriImg1.value = card.card_faces?.get(0)?.image_uris?.normal ?: ""
                 uriImg2.value = card.card_faces?.get(1)?.image_uris?.normal ?: ""
                 textName.value = card.card_faces?.get(0)?.name ?: ""
                 textTypeLine.value = card.card_faces?.get(0)?.type_line ?: ""
                 textOracle.value = card.card_faces?.get(0)?.oracle_text ?: ""
-                var pt = card.card_faces?.get(0)?.power
-                pt += "/"
-                pt += card.card_faces?.get(0)?.toughness
+                var pt = card.card_faces?.get(0)?.power?.replace(".5","½")
+                pt += "|"
+                pt += card.card_faces?.get(0)?.toughness?.replace(".5","½")
                 textPowerToughness.value = if(pt!!.length > 2) pt else ""
             }
             else if(card.layout == CardLayout.PLANAR){
                 isTwoFacedOrFlip.value = false
                 cardRotation.value = 90F
+                manaCost.value = card.mana_cost ?: ""
                 uriImg1.value = card.image_uris?.normal ?: ""
                 uriImg2.value = ""
                 textName.value = card.name ?: ""
                 textTypeLine.value = card.type_line ?: ""
                 textOracle.value = card.oracle_text ?: ""
-                val pt = card.power + "/" + card.toughness
+                val pt = card.power?.replace(".5","½") + "|" + card.toughness?.replace(".5","½")
                 textPowerToughness.value = if(pt.length > 2) pt else ""
             }
             else{
@@ -170,10 +175,11 @@ class MainViewModel(private val repository: CardRepository) : ViewModel() {
                 cardRotation.value = 0F
                 uriImg1.value = card.image_uris?.normal ?: ""
                 uriImg2.value = ""
+                manaCost.value = card.mana_cost ?: ""
                 textName.value = card.name ?: ""
                 textTypeLine.value = card.type_line ?: ""
                 textOracle.value = card.oracle_text ?: ""
-                val pt = card.power + "/" + card.toughness
+                val pt = card.power?.replace(".5","½") + "|" + card.toughness?.replace(".5","½")
                 textPowerToughness.value = if(pt.length > 2) pt else ""
             }
             selectedCard.value = card
