@@ -31,8 +31,8 @@
                 app:titleTextColor="@android:color/white" />
             <ImageView
                 android:id="@+id/show_card_img_1"
-                android:layout_width="210dp"
-                android:layout_height="280dp"
+                android:layout_width="252dp"
+                android:layout_height="336dp"
                 android:layout_marginTop="16dp"
                 android:rotation="@{viewModel.cardRotation}"
                 android:src="@drawable/ic_no_card_image"
@@ -41,8 +41,8 @@
                 app:layout_constraintTop_toBottomOf="@id/show_card_toolbar" />
             <ImageView
                 android:id="@+id/show_card_img_2"
-                android:layout_width="210dp"
-                android:layout_height="280dp"
+                android:layout_width="252dp"
+                android:layout_height="336dp"
                 android:layout_marginTop="16dp"
                 android:rotationY="90"
                 android:visibility="gone"

@@ -13,4 +13,7 @@ data class CardFace(
     val power: String?,
     val toughness: String?,
     val type_line: String,
+    val printed_name:String?,
+    val printed_text:String?,
+    val printed_type_line:String?,
 )

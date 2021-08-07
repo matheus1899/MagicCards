@@ -33,6 +33,9 @@ data class DBCard(
     val name:String,
     val oracle_text:String = "",
     val power:String = "",
+    val printed_name:String = "",
+    val printed_text:String = "",
+    val printed_type_line:String = "",
     @ColumnInfo(name = "prod_mana")
     val produced_mana:Array<String>?,               //criar uma unica string com todas as cores e usar split
     val toughness:String = "",
@@ -101,7 +104,7 @@ data class DBCard(
                 return Card(dbcard.idCard, dbcard.uuid, dbcard.lang, dbcard.oracle_id, print_uri, Uri.parse(dbcard.rulings_uri), Uri.parse(dbcard.scryfall_uri),
                     Uri.parse(dbcard.uri), arrayListCF, dbcard.cmc, dbcard.color_identity ?: arrayOf(""), dbcard.colors ?: arrayOf(""),
                     dbcard.keywords ?: arrayOf(""), CardLayout.getCardLayoutByString(dbcard.layout), dbcard.mana_cost, dbcard.name, dbcard.oracle_text,
-                    dbcard.power,dbcard.produced_mana ?: arrayOf(""), dbcard.toughness, dbcard.type_line, dbcard.artist, dbcard.border_color, dbcard.highres_image,
+                    dbcard.power, dbcard.printed_name, dbcard.printed_text, dbcard.printed_type_line,dbcard.produced_mana ?: arrayOf(""), dbcard.toughness, dbcard.type_line, dbcard.artist, dbcard.border_color, dbcard.highres_image,
                     dbcard.image_status, img_uri, dbcard.rarity, dbcard.textless, dbcard.standard, dbcard.future, dbcard.historic, dbcard.gladiator, dbcard.pioneer,
                     dbcard.modern, dbcard.legacy, dbcard.pauper, dbcard.vintage, dbcard.penny, dbcard.commander, dbcard.brawl, dbcard.duel, dbcard.oldschool, dbcard.premodern,
                     dbcard.set,dbcard.setName, dbcard.setType, dbcard.digital, dbcard.mtgoId, dbcard.arenaId, dbcard.tcgplayerId, dbcard.games)
@@ -126,7 +129,7 @@ data class DBCard(
                 return Card(dbcard.idCard, dbcard.uuid, dbcard.lang, dbcard.oracle_id, print_uri, Uri.parse(dbcard.rulings_uri), Uri.parse(dbcard.scryfall_uri),
                     Uri.parse(dbcard.uri), arrayListCF, dbcard.cmc, dbcard.color_identity ?: arrayOf(""), dbcard.colors ?: arrayOf(""),
                     dbcard.keywords ?: arrayOf(""), CardLayout.getCardLayoutByString(dbcard.layout), dbcard.mana_cost, dbcard.name, dbcard.oracle_text,
-                    dbcard.power,dbcard.produced_mana ?: arrayOf(""), dbcard.toughness, dbcard.type_line, dbcard.artist, dbcard.border_color, dbcard.highres_image,
+                    dbcard.power, dbcard.printed_name, dbcard.printed_text, dbcard.printed_type_line,dbcard.produced_mana ?: arrayOf(""), dbcard.toughness, dbcard.type_line, dbcard.artist, dbcard.border_color, dbcard.highres_image,
                     dbcard.image_status, img_uri, dbcard.rarity, dbcard.textless, dbcard.standard, dbcard.future, dbcard.historic, dbcard.gladiator, dbcard.pioneer,
                     dbcard.modern, dbcard.legacy, dbcard.pauper, dbcard.vintage, dbcard.penny, dbcard.commander, dbcard.brawl, dbcard.duel, dbcard.oldschool, dbcard.premodern,
                     dbcard.set,dbcard.setName, dbcard.setType, dbcard.digital, dbcard.mtgoId, dbcard.arenaId, dbcard.tcgplayerId, dbcard.games)
@@ -145,7 +148,7 @@ data class DBCard(
                 return Card(dbcard.idCard, dbcard.uuid, dbcard.lang, dbcard.oracle_id, print_uri, Uri.parse(dbcard.rulings_uri), Uri.parse(dbcard.scryfall_uri),
                     Uri.parse(dbcard.uri), null, dbcard.cmc, dbcard.color_identity ?: arrayOf(""), dbcard.colors ?: arrayOf(""),
                     dbcard.keywords ?: arrayOf(""), CardLayout.getCardLayoutByString(dbcard.layout), dbcard.mana_cost, dbcard.name, dbcard.oracle_text,
-                    dbcard.power,dbcard.produced_mana ?: arrayOf(""), dbcard.toughness, dbcard.type_line, dbcard.artist, dbcard.border_color, dbcard.highres_image,
+                    dbcard.power, dbcard.printed_name, dbcard.printed_text, dbcard.printed_type_line, dbcard.produced_mana ?: arrayOf(""), dbcard.toughness, dbcard.type_line, dbcard.artist, dbcard.border_color, dbcard.highres_image,
                     dbcard.image_status, img_uri, dbcard.rarity, dbcard.textless, dbcard.standard, dbcard.future, dbcard.historic, dbcard.gladiator, dbcard.pioneer,
                     dbcard.modern, dbcard.legacy, dbcard.pauper, dbcard.vintage, dbcard.penny, dbcard.commander, dbcard.brawl, dbcard.duel, dbcard.oldschool, dbcard.premodern,
                     dbcard.set,dbcard.setName, dbcard.setType, dbcard.digital, dbcard.mtgoId, dbcard.arenaId, dbcard.tcgplayerId, dbcard.games)
@@ -164,7 +167,8 @@ data class DBCard(
             }
             return DBCard(card.id ?: 0, cardFaceID, card.uuid, card.lang, card.oracle_id, card.print_search_uri.toString(), card.rulings_uri.toString(),
                 card.scryfall_uri.toString(), card.uri.toString(), card.cmc, card.color_identity, card.colors, card.keywords, card.layout.toString(),
-                card.mana_cost.toString(), card.name, card.oracle_text ?: "", card.power ?: "", card.produced_mana, card.toughness ?: "",
+                card.mana_cost.toString(), card.name, card.oracle_text ?: "", card.power ?: "", card.printed_name ?: "",
+                card.printed_text ?: "", card.printed_type_line ?: "",card.produced_mana, card.toughness ?: "",
                 card.type_line, card.artist ?: "", card.border_color, card.highres_image, card.image_status,card.rarity, card.textless,
                 card.image_uris?.small ?: "",card.image_uris?.normal ?: "",card.image_uris?.large ?: "",card.image_uris?.png ?: "",
                 card.image_uris?.art_crop ?: "",card.image_uris?.border_crop ?: "", card.standard ?: "", card.future ?: "", card.historic ?: "",

@@ -43,6 +43,12 @@ data class NetworkCard(
     val oracle_text:String?,
     @SerializedName("power")
     val power:String?,
+    @SerializedName("printed_name")
+    val printed_name:String = "",
+    @SerializedName("printed_text")
+    val printed_text:String = "",
+    @SerializedName("printed_type_line")
+    val printed_type_line:String = "",
     @SerializedName("produced_mana")
     val produced_mana:Array<String>?,
     @SerializedName("toughness")
@@ -106,7 +112,7 @@ data class NetworkCard(
                 null, uuid, lang, oracle_id, print, Uri.parse(rulings_uri),
                 Uri.parse(scryfall_uri), Uri.parse(uri), cardFaceArrayList, cmc, color_identity, colors,
                 keywords, CardLayout.getCardLayoutByString(layout), mana_cost ?: "", name,
-                oracle_text?: "", power ?: "", produced_mana, toughness ?: "",
+                oracle_text?: "", power ?: "", printed_name, printed_text, printed_type_line, produced_mana, toughness ?: "",
                 type_line, artist ?: "", border_color, highres_image, image_status,
                 image_uris?.toImageURIs(uuid), rarity, textless, legalities?.standard,legalities?.future,
                 legalities?.historic, legalities?.gladiator, legalities?.pioneer, legalities?.modern,
@@ -128,7 +134,7 @@ data class NetworkCard(
                 null, uuid, lang, oracle_id, print, Uri.parse(rulings_uri),
                 Uri.parse(scryfall_uri), Uri.parse(uri), cardFaceArrayList, cmc, color_identity, colors,
                 keywords, CardLayout.getCardLayoutByString(layout), mana_cost ?: "", name,
-                oracle_text?: "", power ?: "", produced_mana, toughness ?: "",
+                oracle_text?: "", power ?: "", printed_name, printed_text, printed_type_line, produced_mana, toughness ?: "",
                 type_line, artist ?: "", border_color, highres_image, image_status,
                 image_uris?.toImageURIs(uuid), rarity, textless, legalities?.standard,legalities?.future,
                 legalities?.historic, legalities?.gladiator, legalities?.pioneer, legalities?.modern,
@@ -146,7 +152,7 @@ data class NetworkCard(
                 null, uuid, lang, oracle_id, print, Uri.parse(rulings_uri),
                 Uri.parse(scryfall_uri), Uri.parse(uri), null, cmc, color_identity, colors,
                 keywords, CardLayout.getCardLayoutByString(layout), mana_cost ?: "", name,
-                oracle_text?: "", power ?: "", produced_mana, toughness ?: "",
+                oracle_text?: "", power ?: "", printed_name, printed_text, printed_type_line, produced_mana, toughness ?: "",
                 type_line, artist ?: "", border_color, highres_image, image_status,
                 image_uris?.toImageURIs(uuid), rarity, textless, legalities?.standard,legalities?.future,
                 legalities?.historic, legalities?.gladiator, legalities?.pioneer, legalities?.modern,

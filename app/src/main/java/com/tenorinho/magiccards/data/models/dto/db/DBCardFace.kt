@@ -14,8 +14,8 @@ data class DBCardFace(
     var id_imgURIs:Long? = null,
     val uuid_card:String,
 
-    val artist_front: String,
-    val artist_back:String,
+    val artist_front: String = "",
+    val artist_back:String = "",
 
     val color_indicator_front: Array<String>?,
     val color_indicator_back: Array<String>?,
@@ -23,23 +23,33 @@ data class DBCardFace(
     val colors_front: Array<String>?,
     val colors_back: Array<String>?,
 
-    val mana_cost_front: String,
-    val mana_cost_back: String,
+    val mana_cost_front: String = "",
+    val mana_cost_back: String = "",
 
-    val name_front: String,
-    val name_back: String,
+    val name_front: String = "",
+    val name_back: String = "",
 
-    val oracle_text_front: String,
-    val oracle_text_back: String,
+    val oracle_text_front: String = "",
+    val oracle_text_back: String = "",
 
-    val power_front: String,
-    val power_back: String,
+    val power_front: String = "",
+    val power_back: String = "",
 
-    val toughness_front: String,
-    val toughness_back: String,
+    val toughness_front: String = "",
+    val toughness_back: String = "",
 
-    val type_line_front: String,
-    val type_line_back: String
+    val type_line_front: String = "",
+    val type_line_back: String = "",
+
+
+    val printed_name_front:String = "",
+    val printed_name_back:String = "",
+
+    val printed_text_front:String = "",
+    val printed_text_back:String = "",
+
+    val printed_type_line_front:String = "",
+    val printed_type_line_back:String = "",
 ){
     companion object{
         fun toDomain(dbcardFace:DBCardFace, dbImageURIs: DBImageURIs?) : Array<CardFace>{
@@ -49,9 +59,9 @@ data class DBCardFace(
             val arrayImg = DBImageURIs.toDomain(dbImageURIs, dbcardFace.uuid_card)
             with(dbcardFace){
                 cf1 = CardFace(id_CardFace, uuid_card, artist_front, color_indicator_front, colors_front,arrayImg?.get(0), mana_cost_front, name_front,
-                oracle_text_front, power_front, toughness_front, type_line_front)
+                oracle_text_front, power_front, toughness_front, type_line_front, printed_name_front, printed_text_front, printed_type_line_front)
                 cf2 = CardFace(id_CardFace, uuid_card, artist_back, color_indicator_back, colors_back,arrayImg?.get(1), mana_cost_back, name_back,
-                    oracle_text_back, power_back, toughness_back, type_line_back)
+                    oracle_text_back, power_back, toughness_back, type_line_back, printed_name_back, printed_text_back, printed_type_line_back)
             }
             return arrayOf(cf1, cf2)
         }
@@ -76,7 +86,8 @@ data class DBCardFace(
                 front?.color_indicator, back?.color_indicator, front?.colors, back?.colors, front?.mana_cost ?: "", back?.mana_cost ?: "",
                 front?.name ?: "", back?.name ?: "", front?.oracle_text ?: "", back?.oracle_text ?: "",
                 front?.power ?: "", back?.power ?: "", front?.toughness ?: "", back?.toughness?: "",
-                front?.type_line ?: "", back?.type_line ?: "",
+                front?.type_line ?: "", back?.type_line ?: "", front?.printed_name ?: "", back?.printed_name ?: "",
+                front?.printed_text ?: "", back?.printed_text ?: "", front?.printed_type_line ?: "", back?.printed_type_line ?: ""
             )
         }
     }

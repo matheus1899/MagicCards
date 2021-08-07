@@ -24,6 +24,12 @@ data class NetworkCardFace(
     val oracle_text: String?,
     @SerializedName("power")
     val power: String?,
+    @SerializedName("printed_name")
+    val printed_name:String = "",
+    @SerializedName("printed_text")
+    val printed_text:String = "",
+    @SerializedName("printed_type_line")
+    val printed_type_line:String = "",
     @SerializedName("toughness")
     val toughness: String?,
     @SerializedName("type_line")
@@ -42,8 +48,10 @@ data class NetworkCardFace(
             oracle_text,
             power,
             toughness,
-            type_line
-
+            type_line,
+            printed_name,
+            printed_text,
+            printed_type_line
         )
     }
     fun toCardFace(uuid:String?): CardFace {
@@ -59,8 +67,10 @@ data class NetworkCardFace(
             oracle_text,
             power,
             toughness,
-            type_line
-
+            type_line,
+            printed_name,
+            printed_text,
+            printed_type_line
         )
     }
 }
