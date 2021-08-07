@@ -71,7 +71,7 @@ class CardAdapter(val fragment: ListCardsFragment) :
                         imgCard.setBackgroundColor(imgCard.context.resources.getColor(R.color.lightGray))
                     }
                 }
-                txtName.text = card.printed_name?.replace("//", "\n") ?: "UNKNOWN"
+                txtName.text = card.printed_name?.replace("//", "\n") ?: card.name ?: "UNKNOWN"
                 //txtTypeline.text = card.type_line ?: "UNKNOWN"
             }
             else{

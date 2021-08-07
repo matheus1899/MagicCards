@@ -85,9 +85,9 @@ class MainViewModel(private val repository: CardRepository) : ViewModel() {
         if(selectedCard.value != null){
             if(isCardChanged){
                 val cF2 = selectedCard.value!!.card_faces?.get(1)
-                textName.value = cF2?.printed_name ?: ""
-                textTypeLine.value =  cF2?.printed_type_line ?: ""
-                textOracle.value =  cF2?.printed_text ?: ""
+                textName.value = cF2?.printed_name ?: cF2?.name ?: ""
+                textTypeLine.value =  cF2?.printed_type_line ?: cF2?.type_line ?: ""
+                textOracle.value =  cF2?.printed_text ?: cF2?.oracle_text ?: ""
                 var pt =  cF2?.power ?: ""
                 pt += "/"
                 pt +=  cF2?.toughness ?: ""
@@ -95,9 +95,9 @@ class MainViewModel(private val repository: CardRepository) : ViewModel() {
             }
             else{
                 val cF1 = selectedCard.value!!.card_faces?.get(0)
-                textName.value = cF1?.printed_name ?: ""
-                textTypeLine.value =  cF1?.printed_type_line ?: ""
-                textOracle.value =  cF1?.printed_text ?: ""
+                textName.value = cF1?.printed_name ?: cF1?.name ?: ""
+                textTypeLine.value =  cF1?.printed_type_line ?: cF1?.type_line ?: ""
+                textOracle.value =  cF1?.printed_text ?: cF1?.oracle_text ?: ""
                 var pt =  cF1?.power ?: ""
                 pt += "/"
                 pt +=  cF1?.toughness ?: ""
@@ -132,9 +132,9 @@ class MainViewModel(private val repository: CardRepository) : ViewModel() {
                 uriImg1.value = card.image_uris?.normal ?: ""
                 uriImg2.value = ""
                 val cF1 = card.card_faces?.get(0)
-                textName.value = cF1?.printed_name ?: ""
-                textTypeLine.value =  cF1?.printed_type_line ?: ""
-                textOracle.value =  cF1?.printed_text ?: ""
+                textName.value = cF1?.printed_name ?: cF1?.name ?: ""
+                textTypeLine.value =  cF1?.printed_type_line ?: cF1?.type_line ?: ""
+                textOracle.value =  cF1?.printed_text ?: cF1?.oracle_text ?: ""
                 manaCost.value = card.mana_cost ?: ""
                 var pt =  cF1?.power?.replace(".5","½") ?: ""
                 pt += "|"
@@ -149,9 +149,9 @@ class MainViewModel(private val repository: CardRepository) : ViewModel() {
                 manaCost.value = card.mana_cost ?: ""
                 uriImg1.value = card.card_faces?.get(0)?.image_uris?.normal ?: ""
                 uriImg2.value = card.card_faces?.get(1)?.image_uris?.normal ?: ""
-                textName.value = card.card_faces?.get(0)?.printed_name ?: ""
-                textTypeLine.value = card.card_faces?.get(0)?.printed_type_line ?: ""
-                textOracle.value = card.card_faces?.get(0)?.printed_text ?: ""
+                textName.value = card.card_faces?.get(0)?.printed_name ?: card.card_faces?.get(0)?.name ?: ""
+                textTypeLine.value = card.card_faces?.get(0)?.printed_type_line ?: card.card_faces?.get(0)?.type_line ?: ""
+                textOracle.value = card.card_faces?.get(0)?.printed_text ?: card.card_faces?.get(0)?.oracle_text ?: ""
                 var pt = card.card_faces?.get(0)?.power?.replace(".5","½")
                 pt += "|"
                 pt += card.card_faces?.get(0)?.toughness?.replace(".5","½")
@@ -163,9 +163,9 @@ class MainViewModel(private val repository: CardRepository) : ViewModel() {
                 manaCost.value = card.mana_cost ?: ""
                 uriImg1.value = card.image_uris?.normal ?: ""
                 uriImg2.value = ""
-                textName.value = card.printed_text ?: ""
-                textTypeLine.value = card.printed_type_line ?: ""
-                textOracle.value = card.printed_text ?: ""
+                textName.value = card.printed_name ?: card.name ?: ""
+                textTypeLine.value = card.printed_type_line ?: card.type_line ?: ""
+                textOracle.value = card.printed_text ?: card.oracle_text ?: ""
                 val pt = card.power?.replace(".5","½") + "|" + card.toughness?.replace(".5","½")
                 textPowerToughness.value = if(pt.length > 2) pt else ""
             }
@@ -175,9 +175,9 @@ class MainViewModel(private val repository: CardRepository) : ViewModel() {
                 uriImg1.value = card.image_uris?.normal ?: ""
                 uriImg2.value = ""
                 manaCost.value = card.mana_cost ?: ""
-                textName.value = card.printed_name ?: ""
-                textTypeLine.value = card.printed_type_line ?: ""
-                textOracle.value = card.printed_text ?: ""
+                textName.value = card.printed_name ?: card.name ?: ""
+                textTypeLine.value = card.printed_type_line ?: card.type_line ?: ""
+                textOracle.value = card.printed_text ?: card.oracle_text ?: ""
                 val pt = card.power?.replace(".5","½") + "|" + card.toughness?.replace(".5","½")
                 textPowerToughness.value = if(pt.length > 2) pt else ""
             }
