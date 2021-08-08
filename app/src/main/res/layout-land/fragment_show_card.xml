@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.tenorinho.magiccards.data.viewmodel.MainViewModel" />
+    </data>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/show_card_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="@color/colorPrimary"
+                android:elevation="2dp"
+                android:maxHeight="118dp"
+                android:minHeight="64dp"
+                android:padding="0dp"
+                android:theme="@style/ToolbarTheme"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="@string/activity_main_title"
+                app:titleTextColor="@android:color/white" />
+
+            <ImageView
+                android:id="@+id/show_card_img_1"
+                android:layout_width="252dp"
+                android:layout_height="336dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginVertical="16dp"
+                android:rotation="@{viewModel.cardRotation}"
+                android:src="@drawable/ic_no_card_image"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/show_card_toolbar" />
+            <ImageView
+                android:id="@+id/show_card_img_2"
+                android:layout_width="252dp"
+                android:layout_height="336dp"
+                android:layout_marginVertical="16dp"
+                android:layout_marginStart="20dp"
+                android:rotationY="90"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/show_card_toolbar" />
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/show_card_barrier_imgs_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="top"
+                app:constraint_referenced_ids="show_card_img_2,show_card_img_1" />
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/show_card_barrier_imgs_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="end"
+                app:constraint_referenced_ids="show_card_img_2,show_card_img_1" />
+            <ImageButton
+                android:id="@+id/show_card_btn_rotate"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/bg_btn_two_curved_arrows"
+                android:elevation="1dp"
+                android:src="@drawable/ic_two_curved_24"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/show_card_barrier_imgs_2"
+                app:layout_constraintStart_toEndOf="@id/show_card_barrier_imgs_2"
+                app:layout_constraintTop_toBottomOf="@id/show_card_toolbar" />
+            <Button
+                android:id="@+id/show_card_btn_load"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_btn_random"
+                android:elevation="4dp"
+                android:visibility="gone"
+                android:text="@string/random"
+                android:textColor="#FFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/show_card_btn_save"
+                app:layout_constraintTop_toBottomOf="@+id/show_card_txt_oracle" />
+            <Button
+                android:id="@+id/show_card_btn_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_btn_random"
+                android:elevation="4dp"
+                android:visibility="gone"
+                android:text="@string/save"
+                android:textColor="#FFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/show_card_btn_load"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/show_card_txt_oracle" />
+
+            <TextView
+                android:id="@+id/show_card_txt_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginStart="24dp"
+                android:maxLines="2"
+                android:text="@{viewModel.textName}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/show_card_mana_cost"
+                app:layout_constraintStart_toEndOf="@+id/show_card_barrier_imgs_2"
+                app:layout_constraintTop_toBottomOf="@+id/show_card_barrier_imgs_1"
+                tools:text="Afflicted Deserter" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="#555"
+                app:layout_constraintBottom_toTopOf="@id/show_card_txt_typeline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/show_card_barrier_imgs_2"
+                app:layout_constraintTop_toBottomOf="@id/show_card_txt_name" />
+
+            <TextView
+                android:id="@+id/show_card_txt_typeline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="24dp"
+                android:maxLines="2"
+                android:text="@{viewModel.textTypeLine}"
+                app:layout_constraintEnd_toStartOf="@+id/show_card_txt_power_toughness"
+                app:layout_constraintStart_toEndOf="@+id/show_card_barrier_imgs_2"
+                app:layout_constraintTop_toBottomOf="@+id/show_card_txt_name"
+                tools:text="Creature - Human Werewolf" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="#555"
+                app:layout_constraintBottom_toTopOf="@id/show_card_txt_oracle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/show_card_barrier_imgs_2"
+                app:layout_constraintTop_toBottomOf="@id/show_card_txt_typeline" />
+
+            <com.tenorinho.magiccards.ui.custom.ManaIconTextView
+                android:id="@+id/show_card_txt_oracle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/show_card_barrier_imgs_2"
+                app:layout_constraintTop_toBottomOf="@id/show_card_barrier_pt_typeline_bottom"
+                tools:text="At the beginning of each upkeep, if no spells were cast last turn, transform Afflicted Deserter.\n\nThe rising of the first full moon eliminated any doubt as to the horrible truth lurking within." />
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/show_card_barrier_pt_typeline_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="top"
+                app:constraint_referenced_ids="show_card_txt_typeline, show_card_txt_power_toughness" />
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/show_card_barrier_pt_typeline_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="show_card_txt_typeline, show_card_txt_power_toughness" />
+            <TextView
+                android:id="@+id/show_card_txt_power_toughness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginVertical="2dp"
+                android:fontFamily="serif"
+                android:text="@{viewModel.textPowerToughness}"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/show_card_txt_typeline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/show_card_txt_typeline"
+                app:layout_constraintTop_toTopOf="@+id/show_card_txt_typeline"
+                tools:text="3/2" />
+            <com.tenorinho.magiccards.ui.custom.ManaIconTextView
+                android:id="@+id/show_card_mana_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="20dp"
+                android:textSize="16dp"
+                android:gravity="center"
+                android:maxLines="2"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="@+id/show_card_txt_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/show_card_txt_name"
+                app:layout_constraintTop_toTopOf="@id/show_card_txt_name"
+                tools:text="{2}{W}{U}" />
+            <ProgressBar
+                android:id="@+id/show_card_progress_bar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="24dp"
+                android:indeterminate="true"
+                android:indeterminateOnly="true"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@+id/show_card_img_1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/show_card_toolbar" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

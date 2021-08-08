@@ -25,11 +25,17 @@ import com.tenorinho.magiccards.databinding.FragmentShowCardBinding
 class ShowCardFragment : Fragment(), View.OnClickListener{
     private lateinit var binding:FragmentShowCardBinding
     lateinit var viewModel: MainViewModel
+    private var isLandscape:Boolean = false
 
     companion object{
         fun newInstance():ShowCardFragment{
             return ShowCardFragment()
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        isLandscape = resources.getBoolean(R.bool.IsLandscape)
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_show_card, container, false)
@@ -42,6 +48,7 @@ class ShowCardFragment : Fragment(), View.OnClickListener{
         super.onViewCreated(view, savedInstanceState)
         (requireActivity().application as App).appContainer.inject(this, requireActivity() as AppCompatActivity)
         val args = arguments
+        viewModel.isLandscape = isLandscape
         if(args != null && args.containsKey("card_position")){
             viewModel.setSelectedCard(args.getInt("card_position"))
         }
@@ -66,7 +73,6 @@ class ShowCardFragment : Fragment(), View.OnClickListener{
         if(viewModel.isCardChanged){
             if(viewModel.selectedCard.value?.layout == CardLayout.FLIP){
                 animateFlipCard(50L, true)
-                viewModel.flipCardHasRotate()
             }
             if(viewModel.selectedCard.value?.layout == CardLayout.TRANSFORM ||
                 viewModel.selectedCard.value?.layout == CardLayout.MODAL_DFC ||
@@ -74,11 +80,6 @@ class ShowCardFragment : Fragment(), View.OnClickListener{
                 animateTransformCard(50L, true)
             }
         }
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.isCardChanged = false
-        viewModel.selectedCard.value = null
     }
     private fun setButtonsIsEnabled(vararg btn:View, it: Boolean) {
         for(i in btn){
@@ -145,7 +146,7 @@ class ShowCardFragment : Fragment(), View.OnClickListener{
     private fun rotateOrTransformCard() {
         if(viewModel.selectedCard.value != null){
             if(viewModel.selectedCard.value!!.layout == CardLayout.FLIP){
-                animateFlipCard(1000L, false)
+                animateFlipCard(500L, false)
             }
             if(viewModel.selectedCard.value!!.layout == CardLayout.DOUBLE_FACED_TOKEN ||
                 viewModel.selectedCard.value!!.layout == CardLayout.TRANSFORM ||
