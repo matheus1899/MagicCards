@@ -160,8 +160,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/list_cards_toolbar"
             app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-            app:spanCount="2"
-            tools:itemCount="3"
+            app:spanCount="@integer/ListCardsSpanCount"
             tools:listitem="@layout/item_card"/>
         <ProgressBar
             android:id="@+id/main_progress_bar"

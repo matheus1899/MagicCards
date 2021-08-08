@@ -48,11 +48,16 @@ class MainViewModel(private val repository: CardRepository) : ViewModel() {
         var txt = searchText.value
         val txtInitial = txt
         if(!txt.isNullOrBlank()){
-            if(whiteSelected){ txt+=" mana:{W}" }
-            else if(blueSelected){ txt+=" mana:{U}" }
-            else if(greenSelected){ txt+=" mana:{G}" }
-            else if(redSelected){ txt+=" mana:{R}" }
-            else if(blackSelected){ txt+=" mana:{B}" }
+            if(whiteSelected || blueSelected || greenSelected || redSelected || blackSelected){
+                txt = "m:{"
+                if(whiteSelected){ txt+="W" }
+                if(blueSelected){ txt+="U" }
+                if(greenSelected){ txt+="G" }
+                if(redSelected){ txt+="R" }
+                if(blackSelected){ txt+="B" }
+                txt += "} "
+                txt += txtInitial
+            }
             viewModelScope.launch{
                 repository.search(txt, txtInitial!!, ::onSearchResult, ::onFailure)
             }
